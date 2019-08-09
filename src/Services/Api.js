@@ -1,4 +1,4 @@
-import apisauce from 'apisauce';
+import apisauce from 'apisauce'
 // import R from 'ramda';
 // import { UrlEncode } from '@Lib/RamdaExtensions'
 // import Config from 'react-native-config'
@@ -12,10 +12,10 @@ export default {
         'Content-Type': 'application/json'
       },
       timeout: 100000
-    });
+    })
 
     return {
       setAuthToken: token => api.setHeader('Authorization', `Bearer ${token}`)
-    };
+    }
   }
-};
+}

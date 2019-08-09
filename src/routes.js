@@ -1,7 +1,7 @@
-import Dashboard from '@material-ui/icons/Dashboard';
+import Dashboard from '@material-ui/icons/Dashboard'
 // core components/views for Admin layout
-import DashboardPage from 'Containers/Dash/DashboardPage';
-import UserProfile from 'Containers/Dash/UserProfile';
+import DashboardPage from 'Containers/Dash/DashboardPage'
+import UserProfile from 'Containers/Dash/UserProfile'
 
 const dashboardRoutes = [
   {
@@ -25,6 +25,6 @@ const dashboardRoutes = [
     component: DashboardPage,
     layout: '/dash'
   }
-];
+]
 
-export default dashboardRoutes;
+export default dashboardRoutes

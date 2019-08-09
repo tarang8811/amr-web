@@ -1,4 +1,4 @@
-import Images from 'Themes/Images';
+import Images from 'Themes/Images'
 
 const styles = {
   root: {
@@ -27,6 +27,6 @@ const styles = {
   submit: {
     margin: '24px 0px 16px'
   }
-};
+}
 
-export default styles;
+export default styles

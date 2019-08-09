@@ -1,37 +1,29 @@
-import React from 'react';
+import React from 'react'
 // nodejs library that concatenates classes
-import classNames from 'classnames';
+import classNames from 'classnames'
 // nodejs library to set properties for components
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles'
 // @material-ui/icons
 
 // core components
-import cardStyle from './CardStyles';
+import cardStyle from './CardStyles'
 
 function Card({ ...props }) {
-  const {
-    classes,
-    className,
-    children,
-    plain,
-    profile,
-    chart,
-    ...rest
-  } = props;
+  const { classes, className, children, plain, profile, chart, ...rest } = props
   const cardClasses = classNames({
     [classes.card]: true,
     [classes.cardPlain]: plain,
     [classes.cardProfile]: profile,
     [classes.cardChart]: chart,
     [className]: className !== undefined
-  });
+  })
   return (
     <div className={cardClasses} {...rest}>
       {children}
     </div>
-  );
+  )
 }
 
 Card.propTypes = {
@@ -41,6 +33,6 @@ Card.propTypes = {
   profile: PropTypes.bool,
   chart: PropTypes.bool,
   children: PropTypes.node
-};
+}
 
-export default withStyles(cardStyle)(Card);
+export default withStyles(cardStyle)(Card)

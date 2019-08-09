@@ -9,7 +9,7 @@ import {
   whiteColor,
   blackColor,
   hexToRgb
-} from 'css/Helpers';
+} from 'css/Helpers'
 
 const buttonStyle = {
   button: {
@@ -337,6 +337,6 @@ const buttonStyle = {
       }
     }
   }
-};
+}
 
-export default buttonStyle;
+export default buttonStyle

@@ -13,7 +13,7 @@ import {
   grayColor,
   blackColor,
   hexToRgb
-} from 'css/Helpers';
+} from 'css/Helpers'
 
 const sidebarStyle = theme => ({
   drawerPaper: {
@@ -296,6 +296,6 @@ const sidebarStyle = theme => ({
       bottom: '13px'
     }
   }
-});
+})
 
-export default sidebarStyle;
+export default sidebarStyle

@@ -1,5 +1,5 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import React from 'react'
+import TextField from '@material-ui/core/TextField'
 
 const AmrTextField = ({
   required = false,
@@ -28,6 +28,6 @@ const AmrTextField = ({
     type={type}
     InputProps={InputProps}
   />
-);
+)
 
-export default AmrTextField;
+export default AmrTextField

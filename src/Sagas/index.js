@@ -1,5 +1,5 @@
 // import API from '../Services/Api';
-import { all } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects'
 
 /* ------------- API ------------- */
 
@@ -10,5 +10,5 @@ import { all } from 'redux-saga/effects';
 /* ------------- Connect Types To Sagas ------------- */
 
 export default function* root() {
-  yield all([]);
+  yield all([])
 }

@@ -23,7 +23,7 @@ import {
   primaryCardHeader,
   roseCardHeader,
   whiteColor
-} from 'css/Helpers';
+} from 'css/Helpers'
 
 const cardHeaderStyle = {
   cardHeader: {
@@ -136,6 +136,6 @@ const cardHeaderStyle = {
       ...roseCardHeader
     }
   }
-};
+}
 
-export default cardHeaderStyle;
+export default cardHeaderStyle

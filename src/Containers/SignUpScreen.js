@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from 'Components/AmrTextField';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/styles';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import styles from './LoginScreenStyles';
-import Images from 'Themes/Images';
-import Bounce from 'react-reveal/Bounce';
-import MadeWithLove from 'Components/MadeWithLove';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import PasswordTextField from 'Components/PasswordTextField';
+import React, { Component } from 'react'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from 'Components/AmrTextField'
+import Link from '@material-ui/core/Link'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import { withStyles } from '@material-ui/styles'
+import { connect } from 'react-redux'
+import compose from 'recompose/compose'
+import styles from './LoginScreenStyles'
+import Images from 'Themes/Images'
+import Bounce from 'react-reveal/Bounce'
+import MadeWithLove from 'Components/MadeWithLove'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import PasswordTextField from 'Components/PasswordTextField'
 
 class SignUpScreen extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
@@ -97,13 +97,13 @@ class SignUpScreen extends Component {
           </Box>
         </Grid>
       </Grid>
-    );
+    )
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({})
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({})
 
 export default compose(
   withStyles(styles),
@@ -111,4 +111,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(SignUpScreen);
+)(SignUpScreen)

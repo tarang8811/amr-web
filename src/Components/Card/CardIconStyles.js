@@ -23,7 +23,7 @@ import {
   primaryCardHeader,
   roseCardHeader,
   grayColor
-} from 'css/Helpers';
+} from 'css/Helpers'
 
 const cardIconStyle = {
   cardIcon: {
@@ -42,6 +42,6 @@ const cardIconStyle = {
   infoCardHeader,
   primaryCardHeader,
   roseCardHeader
-};
+}
 
-export default cardIconStyle;
+export default cardIconStyle

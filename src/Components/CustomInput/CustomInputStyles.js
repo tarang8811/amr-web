@@ -4,7 +4,7 @@ import {
   successColor,
   grayColor,
   defaultFont
-} from 'css/Helpers';
+} from 'css/Helpers'
 
 const customInputStyle = {
   disabled: {
@@ -65,6 +65,6 @@ const customInputStyle = {
     position: 'relative',
     verticalAlign: 'unset'
   }
-};
+}
 
-export default customInputStyle;
+export default customInputStyle

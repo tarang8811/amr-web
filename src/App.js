@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './App.css';
-import LoginScreen from 'Containers/LoginScreen';
-import SignUpScreen from 'Containers/SignUpScreen';
-import { Route } from 'react-router-dom';
-import DashBoardScreen from 'Containers/Dash';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import './App.css'
+import LoginScreen from 'Containers/LoginScreen'
+import SignUpScreen from 'Containers/SignUpScreen'
+import { Route } from 'react-router-dom'
+import DashBoardScreen from 'Containers/Dash'
 
 class App extends Component {
   render() {
@@ -14,15 +14,15 @@ class App extends Component {
         <Route path="/register" component={SignUpScreen} />
         <Route path="/dash" component={DashBoardScreen} />
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({})
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({})
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App)

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { blackColor, whiteColor, hexToRgb } from 'css/Helpers';
+import { blackColor, whiteColor, hexToRgb } from 'css/Helpers'
 
 const cardStyle = {
   card: {
@@ -48,6 +48,6 @@ const cardStyle = {
       paddingTop: '0px'
     }
   }
-};
+}
 
-export default cardStyle;
+export default cardStyle

@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from 'Components/AmrTextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import React, { Component } from 'react'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import TextField from 'Components/AmrTextField'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 class PasswordTextField extends Component {
-  state = { showPassword: false, password: '' };
+  state = { showPassword: false, password: '' }
 
   onChange = value => {
-    this.props.onChange(value);
-  };
+    this.props.onChange(value)
+  }
 
   onClick = _ => {
-    this.setState({ showPassword: !this.state.showPassword });
-  };
+    this.setState({ showPassword: !this.state.showPassword })
+  }
 
   onMouseDown = event => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   render() {
     return (
@@ -43,8 +43,8 @@ class PasswordTextField extends Component {
           )
         }}
       />
-    );
+    )
   }
 }
 
-export default PasswordTextField;
+export default PasswordTextField

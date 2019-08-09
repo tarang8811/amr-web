@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { hexToRgb, blackColor } from 'css/Helpers';
+import { hexToRgb, blackColor } from 'css/Helpers'
 
 const cardAvatarStyle = {
   cardAvatar: {
@@ -44,6 +44,6 @@ const cardAvatarStyle = {
     }
   },
   cardAvatarPlain: {}
-};
+}
 
-export default cardAvatarStyle;
+export default cardAvatarStyle

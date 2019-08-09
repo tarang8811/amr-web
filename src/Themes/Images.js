@@ -7,6 +7,6 @@ const images = {
   sideBar2: require('Images/sidebar-2.jpg'),
   sideBar3: require('Images/sidebar-3.jpg'),
   sideBar4: require('Images/sidebar-4.jpg')
-};
+}
 
-export default images;
+export default images

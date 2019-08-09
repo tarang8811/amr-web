@@ -15,21 +15,21 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from 'react';
+import React from 'react'
 // nodejs library to set properties for components
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import InputLabel from '@material-ui/core/InputLabel';
+import withStyles from '@material-ui/core/styles/withStyles'
+import InputLabel from '@material-ui/core/InputLabel'
 // core components
-import GridItem from 'Components/Grid/GridItem';
-import GridContainer from 'Components/Grid/GridContainer';
-import CustomInput from 'Components/CustomInput/CustomInput';
-import Button from 'Components/CustomButtons/Button';
-import Card from 'Components/Card/Card';
-import CardHeader from 'Components/Card/CardHeader';
-import CardBody from 'Components/Card/CardBody';
-import CardFooter from 'Components/Card/CardFooter';
+import GridItem from 'Components/Grid/GridItem'
+import GridContainer from 'Components/Grid/GridContainer'
+import CustomInput from 'Components/CustomInput/CustomInput'
+import Button from 'Components/CustomButtons/Button'
+import Card from 'Components/Card/Card'
+import CardHeader from 'Components/Card/CardHeader'
+import CardBody from 'Components/Card/CardBody'
+import CardFooter from 'Components/Card/CardFooter'
 
 const styles = {
   cardCategoryWhite: {
@@ -48,10 +48,10 @@ const styles = {
     marginBottom: '3px',
     textDecoration: 'none'
   }
-};
+}
 
 function UserProfile(props) {
-  const { classes } = props;
+  const { classes } = props
   return (
     <div>
       <GridContainer>
@@ -167,11 +167,11 @@ function UserProfile(props) {
         </GridItem>
       </GridContainer>
     </div>
-  );
+  )
 }
 
 UserProfile.propTypes = {
   classes: PropTypes.object
-};
+}
 
-export default withStyles(styles)(UserProfile);
+export default withStyles(styles)(UserProfile)

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { grayColor } from 'css/Helpers';
+import { grayColor } from 'css/Helpers'
 
 const cardFooterStyle = {
   cardFooter: {
@@ -59,6 +59,6 @@ const cardFooterStyle = {
   cardFooterChart: {
     borderTop: '1px solid ' + grayColor[10]
   }
-};
+}
 
-export default cardFooterStyle;
+export default cardFooterStyle

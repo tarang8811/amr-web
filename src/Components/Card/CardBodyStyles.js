@@ -29,6 +29,6 @@ const cardBodyStyle = {
   cardBodyProfile: {
     marginTop: '15px'
   }
-};
+}
 
-export default cardBodyStyle;
+export default cardBodyStyle

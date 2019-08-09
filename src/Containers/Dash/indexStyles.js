@@ -1,4 +1,4 @@
-import { drawerWidth, transition, container } from 'css/Helpers';
+import { drawerWidth, transition, container } from 'css/Helpers'
 
 const appStyle = theme => ({
   wrapper: {
@@ -27,6 +27,6 @@ const appStyle = theme => ({
   map: {
     marginTop: '70px'
   }
-});
+})
 
-export default appStyle;
+export default appStyle

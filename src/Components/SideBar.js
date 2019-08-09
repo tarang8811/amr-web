@@ -1,42 +1,42 @@
-import React from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import React from 'react'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+import { NavLink } from 'react-router-dom'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Icon from '@material-ui/core/Icon';
+import withStyles from '@material-ui/core/styles/withStyles'
+import Drawer from '@material-ui/core/Drawer'
+import Hidden from '@material-ui/core/Hidden'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Icon from '@material-ui/core/Icon'
 
-import sidebarStyle from './SideBarStyle';
+import sidebarStyle from './SideBarStyle'
 
 const Sidebar = ({ ...props }) => {
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
-    return window.location.href.indexOf(routeName) > -1 ? true : false;
+    return window.location.href.indexOf(routeName) > -1 ? true : false
   }
-  const { classes, color, logo, image, logoText, routes } = props;
+  const { classes, color, logo, image, logoText, routes } = props
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
-        var activePro = ' ';
-        var listItemClasses;
+        var activePro = ' '
+        var listItemClasses
         if (prop.path === '/upgrade-to-pro') {
-          activePro = classes.activePro + ' ';
+          activePro = classes.activePro + ' '
           listItemClasses = classNames({
             [' ' + classes[color]]: true
-          });
+          })
         } else {
           listItemClasses = classNames({
             [' ' + classes[color]]: activeRoute(prop.layout + prop.path)
-          });
+          })
         }
         const whiteFontClasses = classNames({
           [' ' + classes.whiteFont]: activeRoute(prop.layout + prop.path)
-        });
+        })
         return (
           <NavLink
             to={prop.layout + prop.path}
@@ -69,10 +69,10 @@ const Sidebar = ({ ...props }) => {
               />
             </ListItem>
           </NavLink>
-        );
+        )
       })}
     </List>
-  );
+  )
   var brand = (
     <div className={classes.logo}>
       <a
@@ -88,7 +88,7 @@ const Sidebar = ({ ...props }) => {
         {logoText}
       </a>
     </div>
-  );
+  )
   return (
     <div>
       <Hidden mdUp implementation="css">
@@ -138,8 +138,8 @@ const Sidebar = ({ ...props }) => {
         </Drawer>
       </Hidden>
     </div>
-  );
-};
+  )
+}
 
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -151,6 +151,6 @@ Sidebar.propTypes = {
   logoText: PropTypes.string,
   routes: PropTypes.arrayOf(PropTypes.object),
   open: PropTypes.bool
-};
+}
 
-export default withStyles(sidebarStyle)(Sidebar);
+export default withStyles(sidebarStyle)(Sidebar)

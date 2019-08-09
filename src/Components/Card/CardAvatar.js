@@ -1,28 +1,28 @@
-import React from 'react';
+import React from 'react'
 // nodejs library that concatenates classes
-import classNames from 'classnames';
+import classNames from 'classnames'
 // nodejs library to set properties for components
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles'
 // @material-ui/icons
 // core components
 
-import cardAvatarStyle from './CardAvaterStyles';
+import cardAvatarStyle from './CardAvaterStyles'
 
 function CardAvatar({ ...props }) {
-  const { classes, children, className, plain, profile, ...rest } = props;
+  const { classes, children, className, plain, profile, ...rest } = props
   const cardAvatarClasses = classNames({
     [classes.cardAvatar]: true,
     [classes.cardAvatarProfile]: profile,
     [classes.cardAvatarPlain]: plain,
     [className]: className !== undefined
-  });
+  })
   return (
     <div className={cardAvatarClasses} {...rest}>
       {children}
     </div>
-  );
+  )
 }
 
 CardAvatar.propTypes = {
@@ -31,6 +31,6 @@ CardAvatar.propTypes = {
   profile: PropTypes.bool,
   plain: PropTypes.bool,
   classes: PropTypes.object
-};
+}
 
-export default withStyles(cardAvatarStyle)(CardAvatar);
+export default withStyles(cardAvatarStyle)(CardAvatar)

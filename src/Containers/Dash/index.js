@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Switch, Route, Redirect } from 'react-router-dom'
 // creates a beautiful scrollbar
-import PerfectScrollbar from 'perfect-scrollbar';
-import 'perfect-scrollbar/css/perfect-scrollbar.css';
+import PerfectScrollbar from 'perfect-scrollbar'
+import 'perfect-scrollbar/css/perfect-scrollbar.css'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles'
 // core components
 // import Navbar from "components/Navbars/Navbar.jsx";
 // import Footer from "components/Footer/Footer.jsx";
-import Sidebar from 'Components/SideBar';
+import Sidebar from 'Components/SideBar'
 
-import routes from 'routes.js';
+import routes from 'routes.js'
 
-import dashboardStyle from './indexStyles';
-import Images from 'Themes/Images';
+import dashboardStyle from './indexStyles'
+import Images from 'Themes/Images'
 
-let ps;
+let ps
 
 const switchRoutes = (
   <Switch>
@@ -28,13 +28,13 @@ const switchRoutes = (
             component={prop.component}
             key={key}
           />
-        );
+        )
       }
-      return null;
+      return null
     })}
     <Redirect from="/dash" to="/dash/dashboard" />
   </Switch>
-);
+)
 
 class Dashboard extends React.Component {
   state = {
@@ -43,51 +43,51 @@ class Dashboard extends React.Component {
     hasImage: true,
     fixedClasses: 'dropdown show',
     mobileOpen: false
-  };
-  mainPanel = React.createRef();
+  }
+  mainPanel = React.createRef()
   handleImageClick = image => {
-    this.setState({ image: image });
-  };
+    this.setState({ image: image })
+  }
   handleColorClick = color => {
-    this.setState({ color: color });
-  };
+    this.setState({ color: color })
+  }
   handleFixedClick = () => {
     if (this.state.fixedClasses === 'dropdown') {
-      this.setState({ fixedClasses: 'dropdown show' });
+      this.setState({ fixedClasses: 'dropdown show' })
     } else {
-      this.setState({ fixedClasses: 'dropdown' });
+      this.setState({ fixedClasses: 'dropdown' })
     }
-  };
+  }
   handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
+    this.setState({ mobileOpen: !this.state.mobileOpen })
+  }
   resizeFunction = () => {
     if (window.innerWidth >= 960) {
-      this.setState({ mobileOpen: false });
+      this.setState({ mobileOpen: false })
     }
-  };
+  }
   componentDidMount() {
     if (navigator.platform.indexOf('Win') > -1) {
-      ps = new PerfectScrollbar(this.mainPanel.current);
+      ps = new PerfectScrollbar(this.mainPanel.current)
     }
-    window.addEventListener('resize', this.resizeFunction);
+    window.addEventListener('resize', this.resizeFunction)
   }
   componentDidUpdate(e) {
     if (e.history.location.pathname !== e.location.pathname) {
-      this.mainPanel.current.scrollTop = 0;
+      this.mainPanel.current.scrollTop = 0
       if (this.state.mobileOpen) {
-        this.setState({ mobileOpen: false });
+        this.setState({ mobileOpen: false })
       }
     }
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf('Win') > -1) {
-      ps.destroy();
+      ps.destroy()
     }
-    window.removeEventListener('resize', this.resizeFunction);
+    window.removeEventListener('resize', this.resizeFunction)
   }
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes, ...rest } = this.props
     return (
       <div className={classes.wrapper}>
         <Sidebar
@@ -113,12 +113,12 @@ class Dashboard extends React.Component {
           {/* {this.getRoute() ? <Footer /> : null} */}
         </div>
       </div>
-    );
+    )
   }
 }
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
-};
+}
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(dashboardStyle)(Dashboard)

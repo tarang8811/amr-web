@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 // nodejs library that concatenates classes
-import classNames from 'classnames';
+import classNames from 'classnames'
 // nodejs library to set properties for components
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles'
 // @material-ui/icons
 
 // core components
-import cardFooterStyle from './CardFooterStyles';
+import cardFooterStyle from './CardFooterStyles'
 
 function CardFooter({ ...props }) {
   const {
@@ -20,7 +20,7 @@ function CardFooter({ ...props }) {
     stats,
     chart,
     ...rest
-  } = props;
+  } = props
   const cardFooterClasses = classNames({
     [classes.cardFooter]: true,
     [classes.cardFooterPlain]: plain,
@@ -28,12 +28,12 @@ function CardFooter({ ...props }) {
     [classes.cardFooterStats]: stats,
     [classes.cardFooterChart]: chart,
     [className]: className !== undefined
-  });
+  })
   return (
     <div className={cardFooterClasses} {...rest}>
       {children}
     </div>
-  );
+  )
 }
 
 CardFooter.propTypes = {
@@ -44,6 +44,6 @@ CardFooter.propTypes = {
   stats: PropTypes.bool,
   chart: PropTypes.bool,
   children: PropTypes.node
-};
+}
 
-export default withStyles(cardFooterStyle)(CardFooter);
+export default withStyles(cardFooterStyle)(CardFooter)
