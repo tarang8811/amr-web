@@ -1,5 +1,5 @@
 import apisauce from 'apisauce';
-import R from 'ramda';
+// import R from 'ramda';
 // import { UrlEncode } from '@Lib/RamdaExtensions'
 // import Config from 'react-native-config'
 

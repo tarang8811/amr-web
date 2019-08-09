@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -8,15 +9,20 @@ import createStore from './Redux';
 import './index.css';
 import App from './App';
 import serviceWorker from './serviceWorker';
-
-require('dotenv').config();
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from 'Themes/MuiTheme';
 
 const { store } = createStore();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 serviceWorker();
