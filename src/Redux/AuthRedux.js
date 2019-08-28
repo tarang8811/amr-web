@@ -1,0 +1,141 @@
+import { createReducer, createActions } from 'reduxsauce'
+import Immutable from 'seamless-immutable'
+import { success } from './genericReducers'
+import { path } from 'ramda'
+
+/* ------------- Types and Action Creators ------------- */
+
+const { Types, Creators } = createActions({
+  loginRequest: ['params'],
+  loginSuccess: ['data'],
+  loginFailure: ['error'],
+  loginReset: [],
+  logout: [],
+
+  userDataRequest: [],
+  userDataSuccess: ['userData'],
+  userDataFailure: [],
+
+  userDataUpdateRequest: ['updatedData', 'successCallback', 'failureCallback'],
+
+  changePasswordRequest: [
+    'currentPassword',
+    'newPassword',
+    'successCallback',
+    'failureCallback'
+  ],
+  changePasswordSuccess: ['updateObjectId', 'updateBody', 'token'],
+  changePasswordFailure: ['error'],
+
+  signupRequest: ['params', 'failureCallback'],
+  signupSuccess: ['data'],
+  signupFailure: ['error'],
+  userUpdateRequest: ['updateObjectId', 'updateBody', 'token'],
+  userUpdateSuccess: null,
+  userUpdateFailure: ['error'],
+
+  updateMeRequest: ['updatedData']
+})
+
+export const AuthTypes = Types
+export default Creators
+
+/* ------------- Initial State ------------- */
+const initialData = { accessToken: null }
+
+const resetState = {
+  fetching: null,
+  error: null,
+  passwordError: null
+}
+
+export const INITIAL_STATE = Immutable({
+  ...resetState,
+  data: initialData,
+  userData: {},
+  error: null,
+  username: null,
+  updateObjectId: null,
+  updateBody: null
+})
+
+/* ------------- Reducers ------------- */
+
+// request the data for a auth
+export const request = (state, { params }) =>
+  state.merge({
+    fetching: true,
+    username: params.username,
+    data: initialData,
+    error: null
+  })
+
+export const logout = state =>
+  state.merge({ ...resetState, data: { ...initialData }, userData: {} })
+
+export const failure = (state, { error }) =>
+  state.merge({ fetching: false, error })
+
+export const reset = state => state.merge(resetState)
+
+export const userUpdateRequest = (state, { updateObjectId, updateBody }) =>
+  state.merge({
+    updateObjectId,
+    updateBody,
+    fetching: true,
+    passwordError: false,
+    error: null
+  })
+
+export const userUpdateSuccess = state =>
+  state.merge({
+    fetching: false,
+    data: {
+      ...state.data,
+      ...state.updateBody
+    },
+    updateObjectId: null,
+    updateBody: null
+  })
+
+export const loginCheck = state =>
+  state.merge({ fetching: true, passwordError: false })
+
+export const loginChangePassword = (state, { data }) =>
+  state.merge({ fetching: false, passwordError: false })
+
+export const loginCheckFailed = (state, { error }) =>
+  state.merge({ fetching: false, passwordError: true })
+
+export const userDataSuccess = (state, { userData }) =>
+  state.merge({ userData })
+
+export const clearErrors = state =>
+  state.merge({ error: null, passwordError: null })
+
+/* ------------- Selectors ------------- */
+
+export const AuthSelectors = {
+  accessToken: state => path(['data', 'accessToken'], state.auth),
+  tokenData: state => state.auth.data,
+  username: state => path(['username'], state.auth),
+  userId: state => path(['id'], state.auth.userData)
+}
+
+/* ------------- Hookup Reducers To Types ------------- */
+
+export const reducer = createReducer(INITIAL_STATE, {
+  [Types.LOGIN_REQUEST]: request,
+  [Types.LOGIN_SUCCESS]: success,
+  [Types.LOGIN_FAILURE]: failure,
+  [Types.LOGOUT]: logout,
+
+  [Types.USER_DATA_SUCCESS]: userDataSuccess,
+  [Types.SIGNUP_REQUEST]: request,
+  [Types.SIGNUP_SUCCESS]: success,
+  [Types.SIGNUP_FAILURE]: failure,
+  [Types.USER_UPDATE_REQUEST]: userUpdateRequest,
+  [Types.USER_UPDATE_SUCCESS]: userUpdateSuccess,
+  [Types.USER_UPDATE_FAILURE]: failure,
+  [Types.LOGIN_RESET]: reset
+})

@@ -15,8 +15,35 @@ import MadeWithLove from 'Components/MadeWithLove'
 import Typography from '@material-ui/core/Typography'
 import TextField from 'Components/AmrTextField'
 import PasswordTextField from 'Components/PasswordTextField'
+import { bindActionCreators } from 'redux'
+import AuthActions from 'Redux/AuthRedux'
+import store from 'store'
+import { pathOr } from 'ramda'
 
 class LoginScreen extends Component {
+  state = { username: '', password: '' }
+
+  onChangePassword = e => {
+    this.setState({ password: e.target.value })
+  }
+
+  onChangeUsername = e => {
+    this.setState({ username: e.target.value })
+  }
+
+  onLogin = () => {
+    this.props.loginRequest(this.state)
+  }
+
+  componentDidUpdate() {
+    store.set('tokenData', this.props.auth)
+    const accessToken = pathOr(null, ['accessToken'], this.props.auth)
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken)
+      this.props.history.push('/dash')
+    }
+  }
+
   render() {
     const { classes } = this.props
     return (
@@ -31,7 +58,7 @@ class LoginScreen extends Component {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <form className={classes.form} noValidate>
+            <div className={classes.form}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={12}>
                   <TextField
@@ -41,10 +68,15 @@ class LoginScreen extends Component {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
-                  <PasswordTextField onChange={this.onChange} />
+                  <PasswordTextField
+                    onChange={this.onChangePassword}
+                    value={this.state.password}
+                  />
                 </Grid>
                 <Button
                   type="submit"
@@ -52,6 +84,7 @@ class LoginScreen extends Component {
                   variant="contained"
                   color="primary"
                   className={classes.submit}
+                  onClick={this.onLogin}
                 >
                   Sign In
                 </Button>
@@ -68,7 +101,7 @@ class LoginScreen extends Component {
                   </Grid>
                 </Grid>
               </Grid>
-            </form>
+            </div>
           </div>
           <Box mt={5}>
             <MadeWithLove />
@@ -79,9 +112,17 @@ class LoginScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  auth: state.auth.data
+})
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      loginRequest: AuthActions.loginRequest
+    },
+    dispatch
+  )
 
 export default compose(
   withStyles(styles),

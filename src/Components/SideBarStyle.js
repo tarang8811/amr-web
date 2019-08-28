@@ -129,7 +129,6 @@ const sidebarStyle = theme => ({
     }
   },
   list: {
-    marginTop: '20px',
     paddingLeft: '0',
     paddingTop: '0',
     paddingBottom: '0',
@@ -143,12 +142,12 @@ const sidebarStyle = theme => ({
     textDecoration: 'none',
     '&:hover,&:focus,&:visited,&': {
       color: whiteColor
-    }
+    },
+    width: '100%'
   },
   itemLink: {
     width: 'auto',
     transition: 'all 300ms linear',
-    margin: '10px 15px 0',
     borderRadius: '3px',
     position: 'relative',
     display: 'block',
@@ -194,7 +193,7 @@ const sidebarStyle = theme => ({
     }
   },
   blue: {
-    backgroundColor: infoColor[0],
+    color: infoColor[0],
     boxShadow:
       '0 12px 20px -10px rgba(' +
       hexToRgb(infoColor[0]) +
@@ -204,7 +203,7 @@ const sidebarStyle = theme => ({
       hexToRgb(infoColor[0]) +
       ',.2)',
     '&:hover,&:focus': {
-      backgroundColor: infoColor[0],
+      color: infoColor[0],
       boxShadow:
         '0 12px 20px -10px rgba(' +
         hexToRgb(infoColor[0]) +
@@ -295,6 +294,23 @@ const sidebarStyle = theme => ({
       width: '100%',
       bottom: '13px'
     }
+  },
+  sideBarExpansionPanel: {
+    backgroundColor: 'transparent',
+    color: 'white',
+    boxShadow: 'none'
+  },
+  sideBarExpansionSummary: {},
+  sideBarHeading: {},
+  sideBarExpansionDetails: {
+    padding: '0px 24px'
+  },
+  expandIcon: {
+    color: 'white'
+  },
+  sideBarlistItem: {
+    width: '100%',
+    marginTop: '0px'
   }
 })
 

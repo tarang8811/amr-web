@@ -6,9 +6,6 @@ import PerfectScrollbar from 'perfect-scrollbar'
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-// core components
-// import Navbar from "components/Navbars/Navbar.jsx";
-// import Footer from "components/Footer/Footer.jsx";
 import Sidebar from 'Components/SideBar'
 
 import routes from 'routes'
@@ -22,7 +19,7 @@ let ps
 const switchRoutes = (
   <Switch>
     {routes.individualRoutesArray.map((prop, key) => {
-      if (prop.layout === '/dash') {
+      if (prop.layout === '/') {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -33,11 +30,10 @@ const switchRoutes = (
       }
       return null
     })}
-    <Redirect from="/dash" to="/dash/dashboard" />
   </Switch>
 )
 
-class Dashboard extends React.Component {
+class Main extends React.Component {
   state = {
     image: Images[`sideBar${Math.floor(Math.random() * 4) + 1}`],
     color: 'blue',
@@ -46,27 +42,6 @@ class Dashboard extends React.Component {
     mobileOpen: false
   }
   mainPanel = React.createRef()
-  handleImageClick = image => {
-    this.setState({ image: image })
-  }
-  handleColorClick = color => {
-    this.setState({ color: color })
-  }
-  handleFixedClick = () => {
-    if (this.state.fixedClasses === 'dropdown') {
-      this.setState({ fixedClasses: 'dropdown show' })
-    } else {
-      this.setState({ fixedClasses: 'dropdown' })
-    }
-  }
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen })
-  }
-  resizeFunction = () => {
-    if (window.innerWidth >= 960) {
-      this.setState({ mobileOpen: false })
-    }
-  }
   componentDidMount() {
     if (navigator.platform.indexOf('Win') > -1) {
       ps = new PerfectScrollbar(this.mainPanel.current)
@@ -91,16 +66,6 @@ class Dashboard extends React.Component {
     const { classes, ...rest } = this.props
     return (
       <div className={classes.wrapper}>
-        <Sidebar
-          routes={routes}
-          logoText={'Amr Travels'}
-          logo={Images.logo}
-          image={this.state.image}
-          handleDrawerToggle={this.handleDrawerToggle}
-          open={this.state.mobileOpen}
-          color={this.state.color}
-          {...rest}
-        />
         <div className={classes.mainPanel} ref={this.mainPanel}>
           <Navbar
             routes={routes}
@@ -117,8 +82,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+Main.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(dashboardStyle)(Dashboard)
+export default withStyles(dashboardStyle)(Main)

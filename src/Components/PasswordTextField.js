@@ -25,7 +25,7 @@ class PasswordTextField extends Component {
       <TextField
         type={this.state.showPassword ? 'text' : 'password'}
         label="Password"
-        value={this.state.password}
+        value={this.props.value}
         onChange={this.onChange}
         required
         InputProps={{

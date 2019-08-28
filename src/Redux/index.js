@@ -4,7 +4,9 @@ import configureStore from './CreateStore'
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
-  simpleAciton: require('./SimpleRedux').reducer
+  auth: require('./AuthRedux').reducer,
+  flight: require('./FlightRedux').reducer,
+  ticket: require('./TicketRedux').reducer
 })
 
 export default () => {

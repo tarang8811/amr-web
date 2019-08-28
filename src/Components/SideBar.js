@@ -12,6 +12,11 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Icon from '@material-ui/core/Icon'
 
 import sidebarStyle from './SideBarStyle'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const Sidebar = ({ ...props }) => {
   // verifies if routeName is the one active (in browser input)
@@ -19,60 +24,65 @@ const Sidebar = ({ ...props }) => {
     return window.location.href.indexOf(routeName) > -1 ? true : false
   }
   const { classes, color, logo, image, logoText, routes } = props
-  var links = (
-    <List className={classes.list}>
-      {routes.map((prop, key) => {
-        var activePro = ' '
-        var listItemClasses
-        if (prop.path === '/upgrade-to-pro') {
-          activePro = classes.activePro + ' '
-          listItemClasses = classNames({
-            [' ' + classes[color]]: true
-          })
-        } else {
-          listItemClasses = classNames({
-            [' ' + classes[color]]: activeRoute(prop.layout + prop.path)
-          })
-        }
-        const whiteFontClasses = classNames({
-          [' ' + classes.whiteFont]: activeRoute(prop.layout + prop.path)
-        })
-        return (
-          <NavLink
-            to={prop.layout + prop.path}
-            className={activePro + classes.item}
-            activeClassName="active"
-            key={key}
-          >
-            <ListItem button className={classes.itemLink + listItemClasses}>
-              {typeof prop.icon === 'string' ? (
-                <Icon
-                  className={classNames(classes.itemIcon, whiteFontClasses, {
-                    [classes.itemIconRTL]: props.rtlActive
-                  })}
+  var panels = routes.allRoutes.map((p, key) => (
+    <ExpansionPanel className={classes.sideBarExpansionPanel}>
+      <ExpansionPanelSummary
+        expandIcon={<ExpandMoreIcon className={classes.expandIcon} />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+        className={classes.sideBarExpansionSummary}
+      >
+        <Typography className={classes.sideBarHeading}>{p}</Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails className={classes.sideBarExpansionDetails}>
+        <List className={classes.list}>
+          {routes.individualRoutes[p].map((prop, key) => {
+            var activePro = ' '
+            var listItemClasses
+            listItemClasses = classNames({
+              [' ' + classes[color]]: activeRoute(prop.layout + prop.path)
+            })
+            const whiteFontClasses = classNames({
+              [' ' + classes.whiteFont]: activeRoute(prop.layout + prop.path)
+            })
+            return (
+              <NavLink
+                to={prop.layout + prop.path}
+                className={activePro + classes.item}
+                key={key}
+              >
+                <ListItem
+                  button
+                  className={[classes.itemLink + classes.sideBarlistItem]}
                 >
-                  {prop.icon}
-                </Icon>
-              ) : (
-                <prop.icon
-                  className={classNames(classes.itemIcon, whiteFontClasses, {
-                    [classes.itemIconRTL]: props.rtlActive
-                  })}
-                />
-              )}
-              <ListItemText
-                primary={props.rtlActive ? prop.rtlName : prop.name}
-                className={classNames(classes.itemText, whiteFontClasses, {
-                  [classes.itemTextRTL]: props.rtlActive
-                })}
-                disableTypography={true}
-              />
-            </ListItem>
-          </NavLink>
-        )
-      })}
-    </List>
-  )
+                  {typeof prop.icon === 'string' ? (
+                    <Icon
+                      className={classNames(classes.itemIcon, listItemClasses)}
+                    >
+                      {prop.icon}
+                    </Icon>
+                  ) : (
+                    <prop.icon
+                      className={classNames(classes.itemIcon, listItemClasses, {
+                        [classes.itemIconRTL]: props.rtlActive
+                      })}
+                    />
+                  )}
+                  <ListItemText
+                    primary={props.rtlActive ? prop.rtlName : prop.name}
+                    className={classNames(classes.itemText, listItemClasses, {
+                      [classes.itemTextRTL]: props.rtlActive
+                    })}
+                    disableTypography={true}
+                  />
+                </ListItem>
+              </NavLink>
+            )
+          })}
+        </List>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  ))
   var brand = (
     <div className={classes.logo}>
       <a
@@ -107,7 +117,7 @@ const Sidebar = ({ ...props }) => {
           }}
         >
           {brand}
-          <div className={classes.sidebarWrapper}>{links}</div>
+          <div className={classes.sidebarWrapper}>{panels}</div>
           {image !== undefined ? (
             <div
               className={classes.background}
@@ -128,7 +138,7 @@ const Sidebar = ({ ...props }) => {
           }}
         >
           {brand}
-          <div className={classes.sidebarWrapper}>{links}</div>
+          <div className={classes.sidebarWrapper}>{panels}</div>
           {image !== undefined ? (
             <div
               className={classes.background}

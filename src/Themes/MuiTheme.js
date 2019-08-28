@@ -5,9 +5,11 @@ const theme = createMuiTheme({
     primary: { 500: '#00B4FF' }
   },
   overrides: {
-    MuiButton: {
-      label: {
-        color: 'white'
+    MuiButtonBase: {
+      root: {
+        '&$focused': {
+          outline: 'none !important'
+        }
       }
     }
   }

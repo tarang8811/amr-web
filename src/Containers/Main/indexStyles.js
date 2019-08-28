@@ -1,0 +1,29 @@
+import { drawerWidth, transition, container } from 'css/Helpers'
+
+const appStyle = theme => ({
+  wrapper: {
+    position: 'relative',
+    top: '0',
+    height: '100vh'
+  },
+  mainPanel: {
+    overflow: 'auto',
+    position: 'relative',
+    float: 'right',
+    ...transition,
+    maxHeight: '100%',
+    width: '100%',
+    overflowScrolling: 'touch'
+  },
+  content: {
+    marginTop: '70px',
+    padding: '30px 15px',
+    minHeight: 'calc(100vh - 123px)'
+  },
+  container,
+  map: {
+    marginTop: '70px'
+  }
+})
+
+export default appStyle

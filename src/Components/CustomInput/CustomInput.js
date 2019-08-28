@@ -12,6 +12,14 @@ import Check from '@material-ui/icons/Check'
 // core components
 import customInputStyle from './CustomInputStyles'
 
+const CustomInputChange = (inputProps, onChange) => e => {
+  if (inputProps && inputProps.type === 'number') {
+    onChange(Number(e.target.value))
+    return
+  }
+  onChange(e.target.value)
+}
+
 function CustomInput({ ...props }) {
   const {
     classes,
@@ -21,7 +29,8 @@ function CustomInput({ ...props }) {
     labelProps,
     inputProps,
     error,
-    success
+    success,
+    onChange
   } = props
 
   const labelClasses = classNames({
@@ -57,6 +66,7 @@ function CustomInput({ ...props }) {
           underline: underlineClasses
         }}
         id={id}
+        onChange={CustomInputChange(inputProps, onChange)}
         {...inputProps}
       />
       {error ? (
