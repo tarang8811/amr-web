@@ -6,9 +6,6 @@ import PerfectScrollbar from 'perfect-scrollbar'
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-// core components
-// import Navbar from "components/Navbars/Navbar.jsx";
-// import Footer from "components/Footer/Footer.jsx";
 import Sidebar from 'Components/SideBar'
 
 import routes from 'routes'
