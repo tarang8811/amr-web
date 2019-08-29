@@ -3,8 +3,11 @@ import TicketActions, { TicketTypes } from 'Redux/TicketRedux'
 import ApiErrorMessages, { BuildErrorMsg } from './ApiErrorMessages'
 import { ItemsPerPage } from 'Redux/genericReducers'
 
-function* getTickets(api) {
-  const resp = yield call(api.getTickets)
+function* getTickets(api, action) {
+  const filters = action.filters || {}
+  const resp = yield call(api.getTickets, {
+    $filters: JSON.stringify(filters)
+  })
   if (resp.ok) {
     yield put(
       TicketActions.ticketsListSuccess(

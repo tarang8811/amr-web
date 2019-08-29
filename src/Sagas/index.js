@@ -3,7 +3,9 @@ import { all, fork } from 'redux-saga/effects'
 import authSaga from './AuthSagas'
 import startupSaga from './StartupSagas'
 import flightSaga from './FlightSagas'
+import sectorSaga from './SectorSagas'
 import ticketSaga from './TicketSagas'
+import bookingSaga from './BookingSagas'
 import API from 'Services/Api'
 
 /* ------------- API ------------- */
@@ -17,6 +19,8 @@ export default function* root() {
     fork(authSaga, api),
     fork(startupSaga, api),
     fork(flightSaga, api),
-    fork(ticketSaga, api)
+    fork(sectorSaga, api),
+    fork(ticketSaga, api),
+    fork(bookingSaga, api)
   ])
 }

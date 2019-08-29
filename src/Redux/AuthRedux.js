@@ -2,6 +2,7 @@ import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 import { success } from './genericReducers'
 import { path } from 'ramda'
+import store from 'store'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -116,10 +117,15 @@ export const clearErrors = state =>
 /* ------------- Selectors ------------- */
 
 export const AuthSelectors = {
-  accessToken: state => path(['data', 'accessToken'], state.auth),
-  tokenData: state => state.auth.data,
-  username: state => path(['username'], state.auth),
-  userId: state => path(['id'], state.auth.userData)
+  accessToken: _ => {
+    const tokenData = store.get('tokenData')
+    path(['accessToken'], tokenData)
+  },
+  tokenData: _ => store.get('tokenData'),
+  userId: _ => {
+    const userData = store.get('userData')
+    return path(['id'], userData)
+  }
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

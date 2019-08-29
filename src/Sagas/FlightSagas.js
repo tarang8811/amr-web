@@ -2,8 +2,11 @@ import { all, call, put, takeLatest } from 'redux-saga/effects'
 import FlightActions, { FlightTypes } from 'Redux/FlightRedux'
 import ApiErrorMessages, { BuildErrorMsg } from './ApiErrorMessages'
 
-function* getFlights(api) {
-  const resp = yield call(api.getFlights)
+function* getFlights(api, action) {
+  const filters = action.filters || {}
+  const resp = yield call(api.getFlights, {
+    $filters: JSON.stringify(filters)
+  })
   if (resp.ok) {
     yield put(FlightActions.flightsListSuccess(resp.data.data))
   } else if (ApiErrorMessages[resp.problem]) {

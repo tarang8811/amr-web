@@ -5,7 +5,7 @@ import UserProfile from 'Containers/Dash/Profile/UserProfile'
 import AddTicket from 'Containers/Dash/Tickets/AddTicket'
 import AllTickets from 'Containers/Dash/Tickets/AllTickets'
 import BookingSelect from 'Containers/Main/BookingSelect'
-import BookingPage from 'Containers/Main/BookingPage'
+import ConfirmBooking from 'Containers/Main/ConfirmBooking'
 import { flatten } from 'ramda'
 
 const allRoutes = ['Tickets', 'My Bookings', 'Profile']
@@ -82,9 +82,9 @@ const individualRoutes = {
   ],
   Main: [
     {
-      path: 'book',
-      name: 'Book',
-      component: BookingPage,
+      path: 'confirm-booking',
+      name: 'Confirm Booking',
+      component: ConfirmBooking,
       layout: '/'
     },
     {

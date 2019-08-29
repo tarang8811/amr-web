@@ -5,14 +5,14 @@ import { listRequest, listSuccess, listFailure } from './genericReducers'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  flightsListRequest: ['filters'],
-  flightsListSuccess: ['listData', 'listDataOffset', 'listDataTotal'],
-  flightsListFailure: ['listError'],
+  sectorsListRequest: ['isLazyLoading'],
+  sectorsListSuccess: ['listData', 'listDataOffset', 'listDataTotal'],
+  sectorsListFailure: ['listError'],
 
-  flightsReset: []
+  sectorsReset: []
 })
 
-export const FlightTypes = Types
+export const SectorTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -28,16 +28,16 @@ export const INITIAL_STATE = Immutable({
 
 export const reset = state => INITIAL_STATE
 
-export const FlightSelectors = {
-  listDataOffset: state => state.flights.listDataOffset
+export const SectorSelectors = {
+  listDataOffset: state => state.sectors.listDataOffset
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.FLIGHTS_LIST_REQUEST]: listRequest,
-  [Types.FLIGHTS_LIST_SUCCESS]: listSuccess,
-  [Types.FLIGHTS_LIST_FAILURE]: listFailure,
+  [Types.SECTORS_LIST_REQUEST]: listRequest,
+  [Types.SECTORS_LIST_SUCCESS]: listSuccess,
+  [Types.SECTORS_LIST_FAILURE]: listFailure,
 
-  [Types.FLIGHTS_RESET]: reset
+  [Types.SECTORS_RESET]: reset
 })

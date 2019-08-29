@@ -6,7 +6,8 @@ import configureStore from './CreateStore'
 export const reducers = combineReducers({
   auth: require('./AuthRedux').reducer,
   flight: require('./FlightRedux').reducer,
-  ticket: require('./TicketRedux').reducer
+  ticket: require('./TicketRedux').reducer,
+  sector: require('./SectorRedux').reducer
 })
 
 export default () => {

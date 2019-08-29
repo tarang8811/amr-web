@@ -15,14 +15,15 @@ import CardFooter from 'Components/Card/CardFooter'
 import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import FlightActions from 'Redux/FlightRedux'
+import TicketActions from 'Redux/TicketRedux'
 import AmrSelect from 'Components/Select'
 import { FormatforAmrSelect } from 'Transforms/Flights'
 import Picker from 'Components/Picker/Picker'
-import TicketActions from 'Redux/TicketRedux'
+import SectorActions from 'Redux/SectorRedux'
 import Paper from '@material-ui/core/Paper'
 import Images from 'Themes/Images'
 import Typography from '@material-ui/core/Typography'
+import TicketBookingResult from 'Components/Booking/TicketBookingResult'
 
 const styles = {
   cardCategoryWhite: {
@@ -43,24 +44,58 @@ const styles = {
   },
   userProfileGrid: {
     margin: '0 auto'
-  },
-  avatar: {
-    width: '60px',
-    height: '60px'
   }
 }
 
 class BookingSelect extends React.Component {
+  componentDidMount() {
+    this.props.getSectors()
+  }
+
   state = {
-    showSearchResults: false
+    showSearchResults: false,
+    sector: null,
+    date: null,
+    seats: 0
   }
 
   onUpdate = key => value => {
     this.setState({ [key]: value })
   }
 
+  searchFlight = () => {
+    const sectorArray = this.state.sector.value.split('-')
+    this.props.getTickets({
+      originCode: sectorArray[0],
+      destinationCode: sectorArray[1],
+      date: this.state.date,
+      availableSeats: { $gte: this.state.seats }
+    })
+  }
+
+  onBookTicket = data => () => {
+    this.props.history.push({
+      pathname: '/confirm-booking',
+      state: {
+        data: {
+          ...data,
+          seats: this.state.seats,
+          date: this.state.date
+        }
+      }
+    })
+  }
+
   render() {
     const { classes } = this.props
+
+    const sectors = this.props.sectors.map(s => {
+      return {
+        displayName: s.fullSector,
+        value: `${s.originCode}-${s.destinationCode}`
+      }
+    })
+
     return (
       <div>
         <GridContainer alignItems="center" justify="center">
@@ -72,20 +107,22 @@ class BookingSelect extends React.Component {
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={4}>
-                    <Picker
-                      id="add-ticket-picker"
-                      labelText="Date"
-                      value={this.state.date}
+                    <AmrSelect
+                      id="booking-sector"
+                      labelText="Sector"
+                      inputHtmlName="booking-sector"
+                      onChange={this.onUpdate('sector')}
+                      selectedObject={this.state.sector}
+                      data={sectors}
                       formControlProps={{
                         fullWidth: true
                       }}
-                      onChange={this.onUpdate('date')}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <Picker
                       id="add-ticket-picker"
-                      labelText="Date"
+                      labelText="Booking Date"
                       value={this.state.date}
                       formControlProps={{
                         fullWidth: true
@@ -103,7 +140,7 @@ class BookingSelect extends React.Component {
                       inputProps={{
                         type: 'number'
                       }}
-                      onChange={this.onUpdate('totalSeats')}
+                      onChange={this.onUpdate('seats')}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={2}>
@@ -114,47 +151,12 @@ class BookingSelect extends React.Component {
                 </GridContainer>
               </CardBody>
             </Card>
-            <Card>
-              <CardBody>
-                <GridContainer direction="row">
-                  <GridItem xs={12} sm={12} md={2}>
-                    <img className={classes.avatar} src={Images.logo} alt="" />
-                  </GridItem>
-                  <GridContainer xs={12} sm={12} md={6} direction="row">
-                    <GridContainer xs={12} sm={12} md={12}>
-                      <Typography className={classes.sideBarHeading}>
-                        DEL - IXB
-                      </Typography>
-                      <Typography component="p">SG-125</Typography>
-                      <Typography component="p">Only 6 seats left</Typography>
-                    </GridContainer>
-                    <GridContainer xs={12} sm={12} md={12}>
-                      <Typography className={classes.sideBarHeading}>
-                        DEL - IXB
-                      </Typography>
-                      <Typography component="p">SG-125</Typography>
-                      <Typography component="p">Only 6 seats left</Typography>
-                    </GridContainer>
-                  </GridContainer>
-                  <GridContainer xs={12} sm={12} md={4} direction="row">
-                    <GridContainer xs={12} sm={12} md={12}>
-                      <Typography className={classes.sideBarHeading}>
-                        DEL - IXB
-                      </Typography>
-                      <Typography component="p">SG-125</Typography>
-                      <Typography component="p">Only 6 seats left</Typography>
-                    </GridContainer>
-                    <GridContainer xs={12} sm={12} md={12}>
-                      <Typography className={classes.sideBarHeading}>
-                        DEL - IXB
-                      </Typography>
-                      <Typography component="p">SG-125</Typography>
-                      <Typography component="p">Only 6 seats left</Typography>
-                    </GridContainer>
-                  </GridContainer>
-                </GridContainer>
-              </CardBody>
-            </Card>
+            {this.props.tickets.map(t => (
+              <TicketBookingResult
+                data={t}
+                onBookTicket={this.onBookTicket(t)}
+              />
+            ))}
           </GridItem>
         </GridContainer>
       </div>
@@ -166,4 +168,24 @@ BookingSelect.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(BookingSelect)
+const mapStateToProps = state => ({
+  sectors: state.sector.listData,
+  tickets: state.ticket.listData
+})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getSectors: SectorActions.sectorsListRequest,
+      getTickets: TicketActions.ticketsListRequest
+    },
+    dispatch
+  )
+
+export default compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(BookingSelect)

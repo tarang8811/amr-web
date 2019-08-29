@@ -37,10 +37,11 @@ class LoginScreen extends Component {
 
   componentDidUpdate() {
     store.set('tokenData', this.props.auth)
+    store.set('userData', this.props.userData)
     const accessToken = pathOr(null, ['accessToken'], this.props.auth)
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken)
-      this.props.history.push('/dash')
+      this.props.history.push('/')
     }
   }
 
@@ -113,7 +114,8 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth.data
+  auth: state.auth.data,
+  userData: state.auth.userData
 })
 
 const mapDispatchToProps = dispatch =>

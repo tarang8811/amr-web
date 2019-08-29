@@ -39,10 +39,18 @@ export default {
           }
         ),
       me: () => api.get('users/me'),
-      getFlights: () => api.get('flights'),
-      getTickets: _ => api.get('tickets'),
+      getFlights: params => api.get('flights', params),
+      getSectors: () => api.get('sectors'),
+      getTickets: params => api.get('tickets', params),
       createTicket: params => api.post('tickets', params),
-      updateTicket: (ticketId, params) => api.put(`tickets/${ticketId}`, params)
+      updateTicket: (ticketId, params) =>
+        api.put(`tickets/${ticketId}`, params),
+      getBookings: (userId, params) =>
+        api.get(`/users/${userId}/bookings`, params),
+      createBooking: (userId, params) =>
+        api.post(`/users/${userId}/bookings`, params),
+      updateBooking: (userId, bookingId, params) =>
+        api.put(`/users/${userId}/bookings/${bookingId}`, params)
     }
   }
 }

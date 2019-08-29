@@ -18,7 +18,7 @@ import {
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  ticketsListRequest: ['isLazyLoading'],
+  ticketsListRequest: ['filters'],
   ticketsListSuccess: ['listData', 'listDataOffset', 'listDataTotal'],
   ticketsListFailure: ['listError'],
 
