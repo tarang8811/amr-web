@@ -1,22 +1,21 @@
-import React from 'react'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import { NavLink } from 'react-router-dom'
-// @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles'
 import Drawer from '@material-ui/core/Drawer'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Hidden from '@material-ui/core/Hidden'
+import Icon from '@material-ui/core/Icon'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Icon from '@material-ui/core/Icon'
-
-import sidebarStyle from './SideBarStyle'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+// @material-ui/core components
+import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import sidebarStyle from './SideBarStyle'
 
 const Sidebar = ({ ...props }) => {
   // verifies if routeName is the one active (in browser input)
@@ -41,9 +40,6 @@ const Sidebar = ({ ...props }) => {
             var listItemClasses
             listItemClasses = classNames({
               [' ' + classes[color]]: activeRoute(prop.layout + prop.path)
-            })
-            const whiteFontClasses = classNames({
-              [' ' + classes.whiteFont]: activeRoute(prop.layout + prop.path)
             })
             return (
               <NavLink

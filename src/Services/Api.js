@@ -1,6 +1,6 @@
 import apisauce from 'apisauce'
-import { merge } from 'ramda'
 import { UrlEncode } from 'Lib/RamdaExtensions'
+import { merge } from 'ramda'
 import store from 'store'
 
 export default {
@@ -11,9 +11,9 @@ export default {
       baseURL,
       headers: {
         Origin: 'https://api.amrtravels.in',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
       },
-      headers: { Authorization: `Bearer ${accessToken}` },
       timeout: 100000
     })
 
