@@ -5,8 +5,9 @@ import { ItemsPerPage } from 'Redux/genericReducers'
 import { AuthSelectors } from 'Redux/AuthRedux'
 
 function* getBookings(api, action) {
+  const userId = yield select(AuthSelectors.userId)
   const filters = action.filters || {}
-  const resp = yield call(api.getBookings, {
+  const resp = yield call(api.getBookings, userId, {
     $filters: JSON.stringify(filters)
   })
   if (resp.ok) {
@@ -33,7 +34,7 @@ function* createBooking(api, action) {
 }
 
 function* updateBooking(api, action) {
-  const userId = select(AuthSelectors.userId)
+  const userId = yield select(AuthSelectors.userId)
   const resp = yield call(
     api.updateBooking,
     userId,

@@ -14,6 +14,7 @@ function CustomTable({ ...props }) {
       data={data}
       columns={columns}
       options={options}
+      elevation={0}
     />
   )
 }

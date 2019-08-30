@@ -7,7 +7,8 @@ export const reducers = combineReducers({
   auth: require('./AuthRedux').reducer,
   flight: require('./FlightRedux').reducer,
   ticket: require('./TicketRedux').reducer,
-  sector: require('./SectorRedux').reducer
+  sector: require('./SectorRedux').reducer,
+  booking: require('./BookingRedux').reducer
 })
 
 export default () => {

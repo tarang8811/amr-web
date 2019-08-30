@@ -1,11 +1,18 @@
 import Dashboard from '@material-ui/icons/Dashboard'
 // core components/views for Admin layout
+
+// Dash Screens
 import DashboardPage from 'Containers/Dash/DashboardPage'
-import UserProfile from 'Containers/Dash/Profile/UserProfile'
+import EditProfile from 'Containers/Dash/Profile/EditProfile'
 import AddTicket from 'Containers/Dash/Tickets/AddTicket'
 import AllTickets from 'Containers/Dash/Tickets/AllTickets'
+import UserBookedTickets from 'Containers/Dash/Tickets/UserBookedTickets'
+import ConfirmedBookings from 'Containers/Dash/Bookings/ConfirmedBookings'
+import CanceledBookings from 'Containers/Dash/Bookings/CanceledBooking'
+// Main Screens
 import BookingSelect from 'Containers/Main/BookingSelect'
 import ConfirmBooking from 'Containers/Main/ConfirmBooking'
+
 import { flatten } from 'ramda'
 
 const allRoutes = ['Tickets', 'My Bookings', 'Profile']
@@ -30,7 +37,7 @@ const individualRoutes = {
       path: '/user-booked-tickets',
       name: 'User Booked Tickets',
       icon: Dashboard,
-      component: DashboardPage,
+      component: UserBookedTickets,
       layout: '/dash'
     }
   ],
@@ -39,14 +46,14 @@ const individualRoutes = {
       path: '/confirmed-booking',
       name: 'Confirmed Bookings',
       icon: Dashboard,
-      component: DashboardPage,
+      component: ConfirmedBookings,
       layout: '/dash'
     },
     {
       path: '/cancelled-bookings',
       name: 'Cancelled Bookings',
       icon: Dashboard,
-      component: Dashboard,
+      component: CanceledBookings,
       layout: '/dash'
     }
   ],
@@ -55,14 +62,14 @@ const individualRoutes = {
       path: '/edit-profile',
       name: 'Edit Profile',
       icon: Dashboard,
-      component: UserProfile,
+      component: EditProfile,
       layout: '/dash'
     },
     {
       path: '/account-statement',
       name: 'Account Statement',
       icon: Dashboard,
-      component: UserProfile,
+      component: EditProfile,
       layout: '/dash'
     },
     {
