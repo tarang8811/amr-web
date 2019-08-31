@@ -21,6 +21,7 @@ import { FormatforAmrSelect } from 'Transforms/Flights'
 import Picker from 'Components/Picker/Picker'
 import TicketActions from 'Redux/TicketRedux'
 import styles from './AddTicketStyles'
+import { pathOr } from 'ramda'
 
 const RedundableDataArray = [
   { value: true, displayName: 'Refundable' },
@@ -33,14 +34,35 @@ class AddTicket extends Component {
     flights: PropTypes.array
   }
 
-  state = {
-    flight: null,
-    totalSeats: 0,
-    date: null,
-    price: 0,
-    refundable: RedundableDataArray[1],
-    pnr: '',
-    flights: []
+  constructor(props) {
+    super()
+    this.state = {
+      id: null,
+      flight: null,
+      totalSeats: 0,
+      date: null,
+      price: 0,
+      refundable: RedundableDataArray[1],
+      pnr: '',
+      flights: []
+    }
+
+    const data = pathOr(null, ['data'], props.location.state)
+    if (data) {
+      const { id, flight, availableSeats, date, price, refundable, pnr } = data
+      this.state = {
+        id: id,
+        flight: FormatforAmrSelect([flight])[0],
+        totalSeats: availableSeats,
+        date: date,
+        price: price,
+        refundable: refundable
+          ? RedundableDataArray[0]
+          : RedundableDataArray[1],
+        pnr: pnr,
+        flights: []
+      }
+    }
   }
 
   componentDidMount() {
@@ -53,13 +75,22 @@ class AddTicket extends Component {
     }
   }
 
-  onAddTicket = () => {
-    this.props.createTicket({
-      ...this.state,
-      flight: { id: this.state.flight.value },
-      refundable: this.state.refundable.value,
-      pnr: this.state.pnr.toUpperCase()
-    })
+  onSave = () => {
+    if (this.state.id) {
+      this.props.updateTicket(this.state.id, {
+        ...this.state,
+        flight: { id: this.state.flight.value },
+        refundable: this.state.refundable.value,
+        pnr: this.state.pnr.toUpperCase()
+      })
+    } else {
+      this.props.createTicket({
+        ...this.state,
+        flight: { id: this.state.flight.value },
+        refundable: this.state.refundable.value,
+        pnr: this.state.pnr.toUpperCase()
+      })
+    }
   }
 
   onUpdate = key => value => {
@@ -118,6 +149,7 @@ class AddTicket extends Component {
                         type: 'number'
                       }}
                       onChange={this.onUpdate('totalSeats')}
+                      value={this.state.totalSeats}
                     />
                   </GridItem>
                 </GridContainer>
@@ -130,6 +162,7 @@ class AddTicket extends Component {
                         fullWidth: true
                       }}
                       onChange={this.onUpdate('pnr')}
+                      value={this.state.pnr}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
@@ -143,6 +176,7 @@ class AddTicket extends Component {
                         type: 'number'
                       }}
                       onChange={this.onUpdate('price')}
+                      value={this.state.price}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
@@ -161,8 +195,8 @@ class AddTicket extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary" onClick={this.onAddTicket}>
-                  Add Ticket
+                <Button color="primary" onClick={this.onSave}>
+                  {this.state.id ? 'Update Ticket' : 'Add Ticket'}
                 </Button>
               </CardFooter>
             </Card>
@@ -181,7 +215,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getFlights: FlightActions.flightsListRequest,
-      createTicket: TicketActions.ticketsCreateRequest
+      createTicket: TicketActions.ticketsCreateRequest,
+      updateTicket: TicketActions.ticketsUpdateRequest
     },
     dispatch
   )

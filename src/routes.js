@@ -9,6 +9,7 @@ import AllTickets from 'Containers/Dash/Tickets/AllTickets'
 import UserBookedTickets from 'Containers/Dash/Tickets/UserBookedTickets'
 import ConfirmedBookings from 'Containers/Dash/Bookings/ConfirmedBookings'
 import CanceledBookings from 'Containers/Dash/Bookings/CanceledBooking'
+import PnrList from 'Containers/Dash/Bookings/PnrList'
 // Main Screens
 import BookingSelect from 'Containers/Main/BookingSelect'
 import ConfirmBooking from 'Containers/Main/ConfirmBooking'
@@ -99,6 +100,20 @@ const individualRoutes = {
       name: 'Amr Travels',
       component: BookingSelect,
       layout: '/'
+    }
+  ],
+  Misc: [
+    {
+      path: '/edit-ticket',
+      name: 'Edit Ticket',
+      component: AddTicket,
+      layout: '/dash'
+    },
+    {
+      path: '/pnr-list',
+      name: 'PNR LIST',
+      component: PnrList,
+      layout: '/dash'
     }
   ]
 }

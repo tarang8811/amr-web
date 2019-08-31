@@ -19,6 +19,7 @@ import { connect } from 'react-redux'
 import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import BookingActions from 'Redux/BookingRedux'
+import { ConcatPassengerName } from 'Transforms/Passengers'
 
 const styles = {
   cardCategoryWhite: {
@@ -69,9 +70,12 @@ class ConfirmBooking extends React.Component {
   confirmBooking = () => {
     const { seats, flight, id } = this.props.location.state.data
     this.props.createBooking({
-      passengers: [...Array(seats).keys()].map(
-        k =>
-          `${this.state.titles[k].value} ${this.state.firstNames[k]} ${this.state.lastNames[k]}`
+      passengers: [...Array(seats).keys()].map(k =>
+        ConcatPassengerName({
+          title: this.state.titles[k].value,
+          firstName: this.state.firstNames[k].value,
+          lastName: this.state.lastNames[k]
+        })
       ),
       seats: seats,
       ticket: { id },

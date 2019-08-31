@@ -124,12 +124,22 @@ class AllTickets extends Component {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
-                <Button size="sm" color="primary" onClick={this.onEditTicket}>
+                <Button
+                  size="sm"
+                  color="primary"
+                  onClick={this.onEditTicket(tableMeta.rowIndex)}
+                >
                   Edit
                 </Button>
-                <Button size="sm" color="primary" onClick={this.onPnrListClick}>
-                  PNR LIST
-                </Button>
+                {!!this.props.tickets[tableMeta.rowIndex].passengers.length && (
+                  <Button
+                    size="sm"
+                    color="primary"
+                    onClick={this.onPnrListClick(tableMeta.rowIndex)}
+                  >
+                    PNR LIST
+                  </Button>
+                )}
               </>
             )
           }
@@ -138,9 +148,26 @@ class AllTickets extends Component {
     ]
   }
 
-  onEditTicket = () => {}
+  onEditTicket = rowIndex => () => {
+    const ticketData = this.props.tickets[rowIndex]
+    this.props.history.push({
+      pathname: '/dash/edit-ticket',
+      state: {
+        data: ticketData
+      }
+    })
+  }
 
-  onPnrListClick = () => {}
+  onPnrListClick = rowIndex => () => {
+    const ticketData = this.props.tickets[rowIndex]
+    this.props.history.push({
+      pathname: '/dash/pnr-list',
+      state: {
+        passengers: ticketData.passengers,
+        ticketId: ticketData.id
+      }
+    })
+  }
 
   render() {
     const { classes } = this.props

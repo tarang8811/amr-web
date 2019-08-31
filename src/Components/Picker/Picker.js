@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   KeyboardDatePicker,
-  MuiPickersUtilsProvider
+  MuiPickersUtilsProvider,
+  DateTimePicker
 } from '@material-ui/pickers'
 import FormControl from '@material-ui/core/FormControl'
 import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
 import customInputStyle from 'Components/CustomInput/CustomInputStyles'
 import LuxonUtils from '@date-io/luxon'
+import { DateTime } from 'luxon'
 
 class Picker extends Component {
   static propTypes = {
@@ -23,13 +25,11 @@ class Picker extends Component {
   state = { date: null }
 
   onChange = (date, value) => {
-    this.setState({ date })
     this.props.onChange(value)
   }
 
   render() {
-    const { classes, id, formControlProps, labelText } = this.props
-
+    const { classes, id, formControlProps, labelText, value } = this.props
     return (
       <FormControl
         {...formControlProps}
@@ -44,7 +44,7 @@ class Picker extends Component {
             margin="normal"
             id={id}
             label={labelText}
-            value={this.state.date}
+            value={value ? DateTime.fromSQL(value) : null}
             onChange={this.onChange}
             KeyboardButtonProps={{
               'aria-label': 'change date'
