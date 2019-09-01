@@ -30,7 +30,6 @@ const switchRoutes = (
       }
       return null
     })}
-    <Redirect from="/dash" to="/dash/all-tickets" />
   </Switch>
 )
 

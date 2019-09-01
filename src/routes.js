@@ -13,13 +13,40 @@ import PnrList from 'Containers/Dash/Bookings/PnrList'
 import AddFlight from 'Containers/Dash/Admin/AddFlight'
 import AllFlights from 'Containers/Dash/Admin/AllFlights'
 import AllUsers from 'Containers/Dash/Admin/AllUsers'
+import EditUser from 'Containers/Dash/Admin/EditUser'
+import AccountStatement from 'Containers/Dash/Profile/AccountStatement'
+import ChangePassword from 'Containers/Dash/Profile/ChangePassword'
+import Logout from 'Containers/Dash/Profile/Logout'
+
 // Main Screens
 import BookingSelect from 'Containers/Main/BookingSelect'
 import ConfirmBooking from 'Containers/Main/ConfirmBooking'
 
 import { flatten } from 'ramda'
+import store from 'store'
 
-const allRoutes = ['Admin', 'Tickets', 'My Bookings', 'Profile']
+const allRoutesFunc = () => {
+  const userData = store.get('userData')
+
+  if (userData && userData.role && userData.role.name) {
+    switch (userData.role.name) {
+      case 'Admin':
+        return allRoutesForAdmin
+      case 'Agent':
+        return allRoutesForAgent
+      case 'User':
+        return allRoutesForUser
+    }
+  } else {
+    return []
+  }
+}
+
+const allRoutesForAdmin = ['Admin', 'Tickets', 'My Bookings', 'Profile']
+const allRoutesForAgent = ['Tickets', 'My Bookings', 'Profile']
+const allRoutesForUser = ['My Bookings', 'Profile']
+
+const allRoutes = allRoutesFunc()
 
 const individualRoutes = {
   Admin: [
@@ -96,21 +123,21 @@ const individualRoutes = {
       path: '/account-statement',
       name: 'Account Statement',
       icon: Dashboard,
-      component: EditProfile,
+      component: AccountStatement,
       layout: '/dash'
     },
     {
       path: '/change-password',
       name: 'Change Password',
       icon: Dashboard,
-      component: DashboardPage,
+      component: ChangePassword,
       layout: '/dash'
     },
     {
       path: '/logout',
       name: 'Logout',
       icon: Dashboard,
-      component: DashboardPage,
+      component: Logout,
       layout: '/dash'
     }
   ],
@@ -146,6 +173,12 @@ const individualRoutes = {
       name: 'Edit Flight',
       icon: Dashboard,
       component: AddFlight,
+      layout: '/dash'
+    },
+    {
+      path: '/edit-user',
+      name: 'Edit User',
+      component: EditUser,
       layout: '/dash'
     }
   ]

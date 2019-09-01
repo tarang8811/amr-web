@@ -14,6 +14,18 @@ function* getUsers(api, action) {
   }
 }
 
+function* updateUser(api, action) {
+  const resp = yield call(api.updateUser, action.userId, action.updateParams)
+  if (resp.ok) {
+    yield put(UserActions.usersUpdateSuccess(resp.data.data))
+  } else if (ApiErrorMessages[resp.problem]) {
+    yield put(UserActions.usersUpdateFailure(BuildErrorMsg(resp)))
+  }
+}
+
 export default function* userSagas(api) {
-  yield all([takeLatest(UserTypes.USERS_LIST_REQUEST, getUsers, api)])
+  yield all([
+    takeLatest(UserTypes.USERS_LIST_REQUEST, getUsers, api),
+    takeLatest(UserTypes.USERS_UPDATE_REQUEST, updateUser, api)
+  ])
 }

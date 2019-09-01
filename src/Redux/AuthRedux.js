@@ -31,10 +31,8 @@ const { Types, Creators } = createActions({
   signupRequest: ['params', 'failureCallback'],
   signupSuccess: ['data'],
   signupFailure: ['error'],
-  userUpdateRequest: ['updateObjectId', 'updateBody', 'token'],
-  userUpdateSuccess: null,
-  userUpdateFailure: ['error'],
 
+  changePassword: ['passwordParams'],
   updateMeRequest: ['updatedData']
 })
 
@@ -71,8 +69,10 @@ export const request = (state, { params }) =>
     error: null
   })
 
-export const logout = state =>
-  state.merge({ ...resetState, data: { ...initialData }, userData: {} })
+export const logout = state => {
+  store.clearAll()
+  return state.merge({ ...resetState, data: { ...initialData }, userData: {} })
+}
 
 export const failure = (state, { error }) =>
   state.merge({ fetching: false, error })
@@ -140,8 +140,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNUP_REQUEST]: request,
   [Types.SIGNUP_SUCCESS]: success,
   [Types.SIGNUP_FAILURE]: failure,
-  [Types.USER_UPDATE_REQUEST]: userUpdateRequest,
-  [Types.USER_UPDATE_SUCCESS]: userUpdateSuccess,
-  [Types.USER_UPDATE_FAILURE]: failure,
   [Types.LOGIN_RESET]: reset
 })

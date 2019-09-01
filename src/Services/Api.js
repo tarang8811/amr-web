@@ -40,6 +40,10 @@ export default {
         ),
       me: () => api.get('users/me'),
       getUsers: params => api.get('users', params),
+      getRoles: params => api.get('roles', params),
+      getAccountStatements: params => api.get('account-statements', params),
+      changePassword: params => api.put('users/me/password', params),
+      updateUser: (userId, params) => api.put(`users/${userId}`, params),
       getFlights: params => api.get('flights', params),
       createFlight: params => api.post('flights', params),
       updateFlight: (flightId, params) =>

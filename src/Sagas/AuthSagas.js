@@ -149,23 +149,10 @@ export function* updateUserProfile(api, { file }) {
   }
 }
 
-function* changePassword(
-  api,
-  { currentPassword, newPassword, successCallback, failureCallback }
-) {
-  const { data, ok, problem } = yield call(
-    api.changePassword,
-    newPassword,
-    currentPassword
-  )
-  if (ok) {
-    successCallback()
+export function* changePassword(api, { passwordParams }) {
+  const response = yield call(api.changePassword, passwordParams)
+  if (response.ok) {
   } else {
-    if (data.validationErrors && data.validationErrors.length > 0) {
-      failureCallback(data.validationErrors[0].message)
-    } else {
-      failureCallback(problem)
-    }
   }
 }
 
@@ -181,6 +168,7 @@ export default function* authSagas(api) {
     takeLatest(AuthTypes.USER_DATA_REQUEST, fetchUserData, api),
     takeLatest(AuthTypes.LOGOUT, onLogout, api),
     takeLatest(AuthTypes.USER_DATA_UPDATE_REQUEST, saveUserData, api),
-    takeLatest(AuthTypes.UPDATE_ME_REQUEST, updateMe, api)
+    takeLatest(AuthTypes.UPDATE_ME_REQUEST, updateMe, api),
+    takeLatest(AuthTypes.CHANGE_PASSWORD, changePassword, api)
   ])
 }
