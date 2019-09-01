@@ -5,6 +5,7 @@ import flightSaga from './FlightSagas'
 import sectorSaga from './SectorSagas'
 import ticketSaga from './TicketSagas'
 import bookingSaga from './BookingSagas'
+import userSaga from './UserSagas'
 import API from 'Services/Api'
 
 /* ------------- API ------------- */
@@ -20,6 +21,7 @@ export default function* root() {
     fork(flightSaga, api),
     fork(sectorSaga, api),
     fork(ticketSaga, api),
-    fork(bookingSaga, api)
+    fork(bookingSaga, api),
+    fork(userSaga, api)
   ])
 }

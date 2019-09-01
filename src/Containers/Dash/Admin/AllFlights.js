@@ -10,30 +10,29 @@ import Table from 'Components/Table/Table'
 import Card from 'Components/Card/Card'
 import CardHeader from 'Components/Card/CardHeader'
 import CardBody from 'Components/Card/CardBody'
-import styles from './AllTicketsStyles'
+import styles from 'Containers/Dash/Tickets/AllTicketsStyles'
 import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import TicketActions from 'Redux/TicketRedux'
-import { FormatforAllTickets } from 'Transforms/Tickets'
-import { omit } from 'ramda'
+import FlightActions from 'Redux/FlightRedux'
+import { FormatforAllFlights } from 'Transforms/Flights'
 import Button from 'Components/CustomButtons/Button'
 
-class AllTickets extends Component {
+class AllFlights extends Component {
   static propTypes = {
     classes: PropTypes.object,
     flights: PropTypes.array
   }
 
-  state = { tickets: [] }
+  state = { flights: [] }
 
   componentDidMount() {
-    this.props.getTickets()
+    this.props.getFlights()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.tickets !== nextProps.tickets) {
-      this.setState({ tickets: FormatforAllTickets(nextProps.tickets) })
+    if (this.props.flights !== nextProps.flights) {
+      this.setState({ flights: FormatforAllFlights(nextProps.flights) })
     }
   }
 
@@ -59,56 +58,39 @@ class AllTickets extends Component {
         }
       },
       {
-        name: 'Flight',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
         name: 'Sector',
         options: {
+          filter: true,
+          sort: false,
+          empty: true
+        }
+      },
+      {
+        name: 'Departure Time',
+        options: {
+          filter: true,
+          sort: false,
+          empty: true
+        }
+      },
+      {
+        name: 'Arrival Time',
+        options: {
+          filter: true,
+          sort: false,
+          empty: true
+        }
+      },
+      {
+        name: 'Flight Number',
+        options: {
           filter: false,
           sort: false,
           empty: true
         }
       },
       {
-        name: 'Departure',
-        options: {
-          filter: false,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        label: 'Avl. Seats',
-        name: 'seats',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        name: 'PNR',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        name: 'Price',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        name: 'Entry Date',
+        name: 'Active',
         options: {
           filter: false,
           sort: false,
@@ -127,19 +109,10 @@ class AllTickets extends Component {
                 <Button
                   size="sm"
                   color="primary"
-                  onClick={this.onEditTicket(tableMeta.rowIndex)}
+                  onClick={this.onEditFlight(tableMeta.rowIndex)}
                 >
                   Edit
                 </Button>
-                {!!this.props.tickets[tableMeta.rowIndex].passengers.length && (
-                  <Button
-                    size="sm"
-                    color="primary"
-                    onClick={this.onPnrListClick(tableMeta.rowIndex)}
-                  >
-                    PNR LIST
-                  </Button>
-                )}
               </>
             )
           }
@@ -148,23 +121,12 @@ class AllTickets extends Component {
     ]
   }
 
-  onEditTicket = rowIndex => () => {
-    const ticketData = this.props.tickets[rowIndex]
+  onEditFlight = rowIndex => () => {
+    const flightData = this.props.flights[rowIndex]
     this.props.history.push({
-      pathname: '/dash/edit-ticket',
+      pathname: '/dash/edit-flight',
       state: {
-        data: ticketData
-      }
-    })
-  }
-
-  onPnrListClick = rowIndex => () => {
-    const ticketData = this.props.tickets[rowIndex]
-    this.props.history.push({
-      pathname: '/dash/pnr-list',
-      state: {
-        passengers: ticketData.passengers,
-        ticketId: ticketData.id
+        data: flightData
       }
     })
   }
@@ -177,9 +139,9 @@ class AllTickets extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Tickets</h4>
+              <h4 className={classes.cardTitleWhite}>Flight</h4>
               <p className={classes.cardCategoryWhite}>
-                A list of all your tickets in the platform
+                A list of all your flights in the platform
               </p>
             </CardHeader>
             <CardBody>
@@ -187,7 +149,7 @@ class AllTickets extends Component {
                 tableTitle=""
                 tableHeaderColor="primary"
                 columns={this.getColumns()}
-                data={this.state.tickets}
+                data={this.state.flights}
                 options={this.getTableOptions()}
               />
             </CardBody>
@@ -199,13 +161,13 @@ class AllTickets extends Component {
 }
 
 const mapStateToProps = state => ({
-  tickets: state.ticket.listData
+  flights: state.flight.listData
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getTickets: TicketActions.ticketsListRequest
+      getFlights: FlightActions.flightsListRequest
     },
     dispatch
   )
@@ -216,4 +178,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(AllTickets)
+)(AllFlights)

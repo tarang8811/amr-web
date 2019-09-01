@@ -17,14 +17,3 @@ export const FormatforAllTickets = data => {
     }
   })
 }
-
-export const AllTicketsHeader = [
-  'Sl.No.',
-  'Flight',
-  'Sector',
-  'Departure',
-  'Avl. Seats',
-  'PNR',
-  'Price',
-  'Entry Date'
-]

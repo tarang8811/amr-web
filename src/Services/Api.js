@@ -39,7 +39,11 @@ export default {
           }
         ),
       me: () => api.get('users/me'),
+      getUsers: params => api.get('users', params),
       getFlights: params => api.get('flights', params),
+      createFlight: params => api.post('flights', params),
+      updateFlight: (flightId, params) =>
+        api.put(`flights/${flightId}`, params),
       getSectors: () => api.get('sectors'),
       getTickets: params => api.get('tickets', params),
       createTicket: params => api.post('tickets', params),

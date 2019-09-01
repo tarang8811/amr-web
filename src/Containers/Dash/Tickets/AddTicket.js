@@ -105,7 +105,9 @@ class AddTicket extends Component {
           <GridItem xs={12} sm={12} md={10}>
             <Card>
               <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Add Ticket</h4>
+                <h4 className={classes.cardTitleWhite}>
+                  {this.state.id ? 'Update Ticket' : 'Add Ticket'}
+                </h4>
                 <p className={classes.cardCategoryWhite}>
                   Add tickets to your account
                 </p>

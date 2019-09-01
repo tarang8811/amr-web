@@ -10,15 +10,41 @@ import UserBookedTickets from 'Containers/Dash/Tickets/UserBookedTickets'
 import ConfirmedBookings from 'Containers/Dash/Bookings/ConfirmedBookings'
 import CanceledBookings from 'Containers/Dash/Bookings/CanceledBooking'
 import PnrList from 'Containers/Dash/Bookings/PnrList'
+import AddFlight from 'Containers/Dash/Admin/AddFlight'
+import AllFlights from 'Containers/Dash/Admin/AllFlights'
+import AllUsers from 'Containers/Dash/Admin/AllUsers'
 // Main Screens
 import BookingSelect from 'Containers/Main/BookingSelect'
 import ConfirmBooking from 'Containers/Main/ConfirmBooking'
 
 import { flatten } from 'ramda'
 
-const allRoutes = ['Tickets', 'My Bookings', 'Profile']
+const allRoutes = ['Admin', 'Tickets', 'My Bookings', 'Profile']
 
 const individualRoutes = {
+  Admin: [
+    {
+      path: '/add-flight',
+      name: 'Add Flight',
+      icon: Dashboard,
+      component: AddFlight,
+      layout: '/dash'
+    },
+    {
+      path: '/all-flights',
+      name: 'All Flights',
+      icon: Dashboard,
+      component: AllFlights,
+      layout: '/dash'
+    },
+    {
+      path: '/all-users',
+      name: 'All Users',
+      icon: Dashboard,
+      component: AllUsers,
+      layout: '/dash'
+    }
+  ],
   Tickets: [
     {
       path: '/add-ticket',
@@ -113,6 +139,13 @@ const individualRoutes = {
       path: '/pnr-list',
       name: 'PNR LIST',
       component: PnrList,
+      layout: '/dash'
+    },
+    {
+      path: '/edit-flight',
+      name: 'Edit Flight',
+      icon: Dashboard,
+      component: AddFlight,
       layout: '/dash'
     }
   ]

@@ -10,30 +10,29 @@ import Table from 'Components/Table/Table'
 import Card from 'Components/Card/Card'
 import CardHeader from 'Components/Card/CardHeader'
 import CardBody from 'Components/Card/CardBody'
-import styles from './AllTicketsStyles'
+import styles from 'Containers/Dash/Tickets/AllTicketsStyles'
 import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import TicketActions from 'Redux/TicketRedux'
-import { FormatforAllTickets } from 'Transforms/Tickets'
-import { omit } from 'ramda'
+import UserActions from 'Redux/UserRedux'
+import { FormatforAllUsers } from 'Transforms/Users'
 import Button from 'Components/CustomButtons/Button'
 
-class AllTickets extends Component {
+class AllUsers extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    flights: PropTypes.array
+    users: PropTypes.array
   }
 
-  state = { tickets: [] }
+  state = { users: [] }
 
   componentDidMount() {
-    this.props.getTickets()
+    this.props.getUsers()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.tickets !== nextProps.tickets) {
-      this.setState({ tickets: FormatforAllTickets(nextProps.tickets) })
+    if (this.props.users !== nextProps.users) {
+      this.setState({ users: FormatforAllUsers(nextProps.users) })
     }
   }
 
@@ -59,7 +58,7 @@ class AllTickets extends Component {
         }
       },
       {
-        name: 'Flight',
+        name: 'Company',
         options: {
           filter: true,
           sort: false,
@@ -67,7 +66,23 @@ class AllTickets extends Component {
         }
       },
       {
-        name: 'Sector',
+        name: 'Username',
+        options: {
+          filter: true,
+          sort: false,
+          empty: true
+        }
+      },
+      {
+        name: 'Name',
+        options: {
+          filter: true,
+          sort: false,
+          empty: true
+        }
+      },
+      {
+        name: 'Phone Number',
         options: {
           filter: false,
           sort: false,
@@ -75,7 +90,7 @@ class AllTickets extends Component {
         }
       },
       {
-        name: 'Departure',
+        name: 'Balance',
         options: {
           filter: false,
           sort: false,
@@ -83,32 +98,7 @@ class AllTickets extends Component {
         }
       },
       {
-        label: 'Avl. Seats',
-        name: 'seats',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        name: 'PNR',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        name: 'Price',
-        options: {
-          filter: true,
-          sort: false,
-          empty: true
-        }
-      },
-      {
-        name: 'Entry Date',
+        name: 'Alt. Phone Number',
         options: {
           filter: false,
           sort: false,
@@ -127,19 +117,10 @@ class AllTickets extends Component {
                 <Button
                   size="sm"
                   color="primary"
-                  onClick={this.onEditTicket(tableMeta.rowIndex)}
+                  onClick={this.onEditUser(tableMeta.rowIndex)}
                 >
                   Edit
                 </Button>
-                {!!this.props.tickets[tableMeta.rowIndex].passengers.length && (
-                  <Button
-                    size="sm"
-                    color="primary"
-                    onClick={this.onPnrListClick(tableMeta.rowIndex)}
-                  >
-                    PNR LIST
-                  </Button>
-                )}
               </>
             )
           }
@@ -148,23 +129,12 @@ class AllTickets extends Component {
     ]
   }
 
-  onEditTicket = rowIndex => () => {
-    const ticketData = this.props.tickets[rowIndex]
+  onEditUser = rowIndex => () => {
+    const userData = this.props.users[rowIndex]
     this.props.history.push({
-      pathname: '/dash/edit-ticket',
+      pathname: '/dash/edit-user',
       state: {
-        data: ticketData
-      }
-    })
-  }
-
-  onPnrListClick = rowIndex => () => {
-    const ticketData = this.props.tickets[rowIndex]
-    this.props.history.push({
-      pathname: '/dash/pnr-list',
-      state: {
-        passengers: ticketData.passengers,
-        ticketId: ticketData.id
+        data: userData
       }
     })
   }
@@ -177,9 +147,9 @@ class AllTickets extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Tickets</h4>
+              <h4 className={classes.cardTitleWhite}>Users</h4>
               <p className={classes.cardCategoryWhite}>
-                A list of all your tickets in the platform
+                A list of all your users in the platform
               </p>
             </CardHeader>
             <CardBody>
@@ -187,7 +157,7 @@ class AllTickets extends Component {
                 tableTitle=""
                 tableHeaderColor="primary"
                 columns={this.getColumns()}
-                data={this.state.tickets}
+                data={this.state.users}
                 options={this.getTableOptions()}
               />
             </CardBody>
@@ -199,13 +169,13 @@ class AllTickets extends Component {
 }
 
 const mapStateToProps = state => ({
-  tickets: state.ticket.listData
+  users: state.user.listData
 })
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getTickets: TicketActions.ticketsListRequest
+      getUsers: UserActions.usersListRequest
     },
     dispatch
   )
@@ -216,4 +186,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(AllTickets)
+)(AllUsers)

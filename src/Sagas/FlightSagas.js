@@ -14,6 +14,32 @@ function* getFlights(api, action) {
   }
 }
 
+function* createFlight(api, action) {
+  const resp = yield call(api.createFlight, action.createParams)
+  if (resp.ok) {
+    yield put(FlightActions.flightsCreateSuccess(resp.data.data))
+  } else if (ApiErrorMessages[resp.problem]) {
+    yield put(FlightActions.flightsCreateFailure(BuildErrorMsg(resp)))
+  }
+}
+
+function* updateFlight(api, action) {
+  const resp = yield call(
+    api.updateFlight,
+    action.flightid,
+    action.updateParams
+  )
+  if (resp.ok) {
+    yield put(FlightActions.flightsUpdateSuccess(resp.data.data))
+  } else if (ApiErrorMessages[resp.problem]) {
+    yield put(FlightActions.flightsUpdateFailure(BuildErrorMsg(resp)))
+  }
+}
+
 export default function* flightSagas(api) {
-  yield all([takeLatest(FlightTypes.FLIGHTS_LIST_REQUEST, getFlights, api)])
+  yield all([
+    takeLatest(FlightTypes.FLIGHTS_LIST_REQUEST, getFlights, api),
+    takeLatest(FlightTypes.FLIGHTS_CREATE_REQUEST, createFlight, api),
+    takeLatest(FlightTypes.FLIGHTS_UPDATE_REQUEST, updateFlight, api)
+  ])
 }
