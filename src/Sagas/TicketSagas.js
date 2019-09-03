@@ -2,8 +2,10 @@ import { all, call, put, takeLatest } from 'redux-saga/effects'
 import TicketActions, { TicketTypes } from 'Redux/TicketRedux'
 import ApiErrorMessages, { BuildErrorMsg } from './ApiErrorMessages'
 import { ItemsPerPage } from 'Redux/genericReducers'
+import UIActions from 'Redux/UIRedux'
 
 function* getTickets(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const filters = action.filters || {}
   const resp = yield call(api.getTickets, {
     $filters: JSON.stringify(filters)
@@ -16,8 +18,10 @@ function* getTickets(api, action) {
         resp.data.total
       )
     )
+    yield put(UIActions.onToggleLoader(false))
   } else if (ApiErrorMessages[resp.problem]) {
     yield put(TicketActions.ticketsListFailure(BuildErrorMsg(resp)))
+    yield put(UIActions.onToggleLoader(false))
   }
 }
 

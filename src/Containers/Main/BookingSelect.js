@@ -51,11 +51,12 @@ class BookingSelect extends React.Component {
     showSearchResults: false,
     sector: null,
     date: null,
-    seats: 0
+    seats: 0,
+    readyToSubmit: false
   }
 
   onUpdate = key => value => {
-    this.setState({ [key]: value })
+    this.setState({ [key]: value }, this.handleStateUpdate)
   }
 
   searchFlight = () => {
@@ -66,6 +67,12 @@ class BookingSelect extends React.Component {
       date: this.state.date,
       availableSeats: { $gte: this.state.seats }
     })
+  }
+
+  handleStateUpdate = () => {
+    const readyToSubmit =
+      !!this.state.sector && !!this.state.date && !!this.state.seats
+    this.setState({ readyToSubmit })
   }
 
   onBookTicket = data => () => {
@@ -138,8 +145,20 @@ class BookingSelect extends React.Component {
                       onChange={this.onUpdate('seats')}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={2}>
-                    <Button color="primary" onClick={this.searchFlight}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={2}
+                    alignItems="center"
+                    justify="center"
+                    container
+                  >
+                    <Button
+                      fullWidth
+                      disabled={!this.state.readyToSubmit}
+                      color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                      onClick={this.searchFlight}
+                    >
                       Search Flights
                     </Button>
                   </GridItem>

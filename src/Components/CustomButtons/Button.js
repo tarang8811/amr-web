@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button'
 
 import buttonStyle from './ButtonStyles'
 function RegularButton({ ...props }) {
-  const {
+  let {
     classes,
     color,
     round,
@@ -54,7 +54,8 @@ RegularButton.propTypes = {
     'danger',
     'rose',
     'white',
-    'transparent'
+    'transparent',
+    'inactive'
   ]),
   size: PropTypes.oneOf(['sm', 'lg']),
   simple: PropTypes.bool,

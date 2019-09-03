@@ -32,7 +32,7 @@ const styles = {
     marginRight: '10px'
   },
   seats: {
-    fontSize: '13px',
+    fontSize: '14px',
     marginTop: '4px'
   },
   departureNArrival: {
@@ -78,15 +78,16 @@ const TicketBookingResult = ({ classes, data, onBookTicket }) => (
         <GridItem xs={12} sm={12} md={2}>
           <img className={classes.avatar} src={Images.spicejet} alt="" />
         </GridItem>
-        <GridContainer
+        <GridItem
+          container
           xs={12}
           sm={12}
-          md={8}
+          md={7}
           direction="row"
           justify="center"
           alignItems="center"
         >
-          <GridContainer xs={12} sm={12} md={12}>
+          <GridItem container xs={12} sm={12} md={12}>
             <Typography className={classes.fullSectorHeading}>
               {data.flight.fullSector}
             </Typography>
@@ -94,45 +95,42 @@ const TicketBookingResult = ({ classes, data, onBookTicket }) => (
               {data.flight.flightNumber}
             </Typography>
             <Typography className={classes.seats}>
-              Only {data.availableSeats} seats left
+              Only {data.availableSeats} seats left!
             </Typography>
-          </GridContainer>
-          <GridContainer
+          </GridItem>
+          <GridItem
+            container
             xs={12}
             sm={12}
             md={12}
             alignItems="center"
-            justify="center"
+            justify="flex-start"
           >
-            <GridContainer xs={12} sm={12} md={6} alignItems="center">
-              <Typography className={classes.departureNArrival}>
-                Departure:
-              </Typography>
-              <Typography className={classes.time}>
-                {DateTime.fromSQL(data.flight.departureTime).toFormat(
-                  'hh:mm a'
-                )}
-              </Typography>
-            </GridContainer>
-            <GridContainer xs={12} sm={12} md={6} alignItems="center">
-              <Typography className={classes.departureNArrival}>
-                Arrival
-              </Typography>
-              <Typography className={classes.time}>
-                {DateTime.fromSQL(data.flight.arrivalTime).toFormat('hh:mm a')}
-              </Typography>
-            </GridContainer>
-          </GridContainer>
-        </GridContainer>
-        <GridContainer
+            <Typography className={classes.departureNArrival}>
+              Departure:
+            </Typography>
+            <Typography className={classes.time}>
+              {DateTime.fromSQL(data.flight.departureTime).toFormat('hh:mm a')}
+            </Typography>
+            <Typography className={classes.departureNArrival}>
+              Arrival
+            </Typography>
+            <Typography className={classes.time}>
+              {DateTime.fromSQL(data.flight.arrivalTime).toFormat('hh:mm a')}
+            </Typography>
+          </GridItem>
+        </GridItem>
+        <GridItem
+          container
           xs={12}
           sm={12}
-          md={2}
+          md={3}
           direction="row"
           justify="center"
           alignItems="center"
         >
-          <GridContainer
+          <GridItem
+            container
             xs={12}
             sm={12}
             md={12}
@@ -142,8 +140,9 @@ const TicketBookingResult = ({ classes, data, onBookTicket }) => (
             <Typography className={classes.priceHeader}>PRICE:</Typography>
             <Typography className={classes.price}>{data.price}</Typography>
             <Typography className={classes.perPerson}>/ PERSON</Typography>
-          </GridContainer>
-          <GridContainer
+          </GridItem>
+          <GridItem
+            container
             xs={12}
             sm={12}
             md={12}
@@ -160,8 +159,8 @@ const TicketBookingResult = ({ classes, data, onBookTicket }) => (
                 NON REFUNDABLE
               </Typography>
             )}
-          </GridContainer>
-        </GridContainer>
+          </GridItem>
+        </GridItem>
       </GridContainer>
     </CardBody>
   </Card>

@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
-  KeyboardDatePicker,
   MuiPickersUtilsProvider,
   TimePicker,
-  DateTimePicker
+  DatePicker
 } from '@material-ui/pickers'
 import FormControl from '@material-ui/core/FormControl'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -25,9 +24,8 @@ class Picker extends Component {
 
   state = { date: null }
 
-  onChange = (date, value) => {
-    console.log(value)
-    this.props.onChange(value)
+  onChange = date => {
+    this.props.onChange(date.toFormat('yyyy-MM-dd'))
   }
 
   onChangeTime = date => {
@@ -43,6 +41,10 @@ class Picker extends Component {
       value,
       type = 'date'
     } = this.props
+
+    const underlineClasses = classNames({
+      [classes.underline]: true
+    })
     return (
       <FormControl
         {...formControlProps}
@@ -51,8 +53,7 @@ class Picker extends Component {
       >
         <MuiPickersUtilsProvider utils={LuxonUtils}>
           {type === 'date' ? (
-            <KeyboardDatePicker
-              disableToolbar
+            <DatePicker
               variant="inline"
               format="yyyy-MM-dd"
               margin="normal"
@@ -60,9 +61,7 @@ class Picker extends Component {
               label={labelText}
               value={value ? DateTime.fromSQL(value) : null}
               onChange={this.onChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change time'
-              }}
+              InputProps={{ underline: underlineClasses }}
             />
           ) : (
             <TimePicker
@@ -74,9 +73,6 @@ class Picker extends Component {
               label={labelText}
               value={value ? DateTime.fromSQL(value) : null}
               onChange={this.onChangeTime}
-              KeyboardButtonProps={{
-                'aria-label': 'change time'
-              }}
             />
           )}
         </MuiPickersUtilsProvider>

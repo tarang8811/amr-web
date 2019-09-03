@@ -41,6 +41,11 @@ class AmrSelect extends Component {
       [' ' + classes.labelRootError]: error,
       [' ' + classes.labelRootSuccess]: success && !error
     })
+    const underlineClasses = classNames({
+      [classes.underlineError]: error,
+      [classes.underlineSuccess]: success && !error,
+      [classes.underline]: true
+    })
 
     const value = this.props.selectedObject
       ? this.props.selectedObject.value
@@ -67,6 +72,7 @@ class AmrSelect extends Component {
             name: this.props.inputHtmlName,
             id: this.props.id
           }}
+          classes={{ underline: underlineClasses }}
         >
           {data.map(d => (
             <MenuItem value={d.value}>{d.displayName}</MenuItem>

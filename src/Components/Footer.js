@@ -21,18 +21,8 @@ function Footer({ ...props }) {
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a href="#company" className={classes.block}>
-                Company
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#portfolio" className={classes.block}>
-                Portfolio
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#blog" className={classes.block}>
-                Blog
+              <a href="#support" className={classes.block}>
+                Support: 9832302122
               </a>
             </ListItem>
           </List>
@@ -41,13 +31,13 @@ function Footer({ ...props }) {
           <span>
             &copy; {1900 + new Date().getYear()}{' '}
             <a
-              href="https://www.creative-tim.com?ref=mdr-footer"
+              href="https://amrtravels.in"
               target="_blank"
               className={classes.a}
             >
-              Creative Tim
+              Amr Travels
             </a>
-            , made with love for a better web
+            , made with love for a better travel booking
           </span>
         </p>
       </div>

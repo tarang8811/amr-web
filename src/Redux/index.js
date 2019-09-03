@@ -11,6 +11,7 @@ export const reducers = combineReducers({
   booking: require('./BookingRedux').reducer,
   user: require('./UserRedux').reducer,
   role: require('./RoleRedux').reducer,
+  ui: require('./UIRedux').reducer,
   accountStatment: require('./AccountStatementRedux').reducer
 })
 

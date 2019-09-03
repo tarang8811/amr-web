@@ -9,7 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import Sidebar from 'Components/SideBar'
 
 import routes from 'routes'
-import Navbar from 'Components/NavBar'
+import MainNavBar from 'Components/Main/MainNavBar'
 import Footer from 'Components/Footer'
 import dashboardStyle from './indexStyles'
 import Images from 'Themes/Images'
@@ -67,7 +67,7 @@ class Main extends React.Component {
     return (
       <div className={classes.wrapper}>
         <div className={classes.mainPanel} ref={this.mainPanel}>
-          <Navbar
+          <MainNavBar
             routes={routes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}

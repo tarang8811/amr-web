@@ -20,6 +20,7 @@ import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import BookingActions from 'Redux/BookingRedux'
 import { ConcatPassengerName } from 'Transforms/Passengers'
+import { flatten } from 'ramda'
 
 const styles = {
   cardCategoryWhite: {
@@ -44,6 +45,9 @@ const styles = {
   avatar: {
     width: '60px',
     height: '60px'
+  },
+  card: {
+    marginTop: '50px'
   }
 }
 
@@ -59,12 +63,28 @@ class ConfirmBooking extends React.Component {
     this.state = {
       titles: [...Array(seats).keys()].map(k => null),
       firstNames: [...Array(seats).keys()].map(k => ''),
-      lastNames: [...Array(seats).keys()].map(k => '')
+      lastNames: [...Array(seats).keys()].map(k => ''),
+      readyToSubmit: false
     }
   }
 
   onUpdate = (key, index) => value => {
-    this.setState({ [key]: update(index, value, this.state[key]) })
+    this.setState(
+      { [key]: update(index, value, this.state[key]) },
+      this.handleStateUpdate
+    )
+  }
+
+  handleStateUpdate = () => {
+    const flattenedArray = flatten([
+      this.state.titles,
+      this.state.firstNames,
+      this.state.lastNames
+    ])
+    const filteredArray = flattenedArray.filter(v => !!v)
+    // contins no null or empty values
+    const readyToSubmit = filteredArray.length === flattenedArray.length
+    this.setState({ readyToSubmit })
   }
 
   confirmBooking = () => {
@@ -90,7 +110,7 @@ class ConfirmBooking extends React.Component {
         <GridContainer alignItems="center" justify="center">
           <GridItem xs={12} sm={12} md={10}>
             <ConfirmBookingHeader data={this.props.location.state.data} />
-            <Card>
+            <Card className={classes.card}>
               <CardHeader color="primary">
                 <h4 className={classes.cardTitleWhite}>
                   Add Passenger Details
@@ -141,6 +161,8 @@ class ConfirmBooking extends React.Component {
                 <GridItem xs={12} sm={12} md={3}>
                   <Button
                     color="primary"
+                    disabled={!this.state.readyToSubmit}
+                    color={this.state.readyToSubmit ? 'primary' : 'inactive'}
                     onClick={this.confirmBooking}
                     fullWidth
                   >

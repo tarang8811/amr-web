@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { defaultFont, dangerColor, whiteColor } from 'css/Helpers'
+import { defaultFont, dangerColor, whiteColor, primaryColor } from 'css/Helpers'
 
 import dropdownStyle from './DropdownStyles'
 
@@ -117,9 +117,19 @@ const headerLinksStyle = theme => ({
   searchWrapper: {
     [theme.breakpoints.down('sm')]: {
       width: '-webkit-fill-available',
-      margin: '10px 15px 0'
+      margin: '20px 15px 0'
     },
-    display: 'inline-block'
+    marginRight: '40px',
+    display: 'inline-block',
+    backgroundColor: primaryColor[0],
+    padding: '10px 10px',
+    borderRadius: '20px',
+    color: 'white'
+  },
+  balance: {
+    fontSize: '15px',
+    fontWeight: '500',
+    marginBottom: '0px'
   }
 })
 

@@ -10,6 +10,7 @@ import StartupActions from 'Redux/StartupRedux'
 import { bindActionCreators } from 'redux'
 import store from 'store'
 import MainScreen from 'Containers/Main'
+import Loader from 'react-loader-spinner'
 
 class App extends Component {
   componentWillMount() {
@@ -22,6 +23,11 @@ class App extends Component {
       window.location.href.indexOf('dash') !== -1 ? DashBoardScreen : MainScreen
     return (
       <div className="App">
+        {this.props.showLoader && (
+          <div className="Loader">
+            <Loader type="Plane" color="#00BFFF" secondaryColor="#af2cc5" />
+          </div>
+        )}
         <Route path="/login" component={LoginScreen} />
         <Route path="/register" component={SignUpScreen} />
         <PrivateRoute
@@ -34,7 +40,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  showLoader: state.ui.showLoader
 })
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
