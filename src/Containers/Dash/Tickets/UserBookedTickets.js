@@ -26,7 +26,7 @@ class UserBookedTickets extends Component {
     flights: PropTypes.array
   }
 
-  state = { bookings: [], from: null, to: null }
+  state = { bookings: [], from: null, to: null, readyToSubmit: false }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.bookings !== nextProps.bookings) {
@@ -39,8 +39,11 @@ class UserBookedTickets extends Component {
   getTableOptions = () => {
     return {
       filterType: 'dropdown',
-      serverSide: true,
-      onTableChange: this.onTableChange
+      onTableChange: this.onTableChange,
+      selectableRows: 'none',
+      filter: false,
+      print: false,
+      download: false
     }
   }
 
@@ -95,11 +98,11 @@ class UserBookedTickets extends Component {
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <>
+              <GridItem container alignItems="center">
                 {value.map(v => (
-                  <p>{v.name}</p>
+                  <span>{v.name}</span>
                 ))}
-              </>
+              </GridItem>
             )
           }
         }
@@ -145,11 +148,12 @@ class UserBookedTickets extends Component {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
-                <Button size="sm" color="primary" onClick={this.onViewTicket}>
+                <Button
+                  size="sm"
+                  color="primary"
+                  onClick={this.onViewTicket(tableMeta.rowIndex)}
+                >
                   View Ticket
-                </Button>
-                <Button size="sm" color="danger" onClick={this.onCancelTicket}>
-                  Cancel Ticket
                 </Button>
               </>
             )
@@ -160,7 +164,12 @@ class UserBookedTickets extends Component {
   }
 
   onUpdate = key => value => {
-    this.setState({ [key]: value })
+    this.setState({ [key]: value }, this.handleStateUpdate)
+  }
+
+  handleStateUpdate = () => {
+    const readyToSubmit = !!this.state.from && !!this.state.to
+    this.setState({ readyToSubmit })
   }
 
   searchBooking = () => {
@@ -170,9 +179,29 @@ class UserBookedTickets extends Component {
     })
   }
 
-  onViewTicket = () => {}
-
-  onCancelTicket = () => {}
+  onViewTicket = rowIndex => () => {
+    const bookingData = this.props.bookings[rowIndex]
+    this.props.history.push({
+      pathname: '/dash/view-ticket',
+      state: {
+        data: {
+          id: bookingData.id,
+          origin: bookingData.flight.origin,
+          date: bookingData.ticket.date,
+          destination: bookingData.flight.destination,
+          originCode: bookingData.flight.originCode,
+          destinationCode: bookingData.flight.destinationCode,
+          flightNumber: bookingData.flight.flightNumber,
+          arrivalTime: bookingData.flight.arrivalTime,
+          departureTime: bookingData.flight.departureTime,
+          passengers: bookingData.passengers,
+          refundable: bookingData.ticket.refundable,
+          pnr: bookingData.ticket.pnr,
+          amount: bookingData.amount
+        }
+      }
+    })
+  }
 
   render() {
     const { classes } = this.props
@@ -187,7 +216,7 @@ class UserBookedTickets extends Component {
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={5}>
                   <Picker
                     id="user-booking-from"
                     labelText="Booking Date (From)"
@@ -198,7 +227,7 @@ class UserBookedTickets extends Component {
                     onChange={this.onUpdate('from')}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={5}>
                   <Picker
                     id="user-booking-to"
                     labelText="Booking Date (To)"
@@ -209,8 +238,20 @@ class UserBookedTickets extends Component {
                     onChange={this.onUpdate('to')}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <Button color="primary" onClick={this.searchBooking}>
+                <GridItem
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={12}
+                  sm={12}
+                  md={2}
+                >
+                  <Button
+                    disabled={!this.state.readyToSubmit}
+                    color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                    onClick={this.searchBooking}
+                    fullWidth
+                  >
                     Search
                   </Button>
                 </GridItem>
@@ -218,7 +259,7 @@ class UserBookedTickets extends Component {
             </CardBody>
           </Card>
           {!!this.state.bookings.length && (
-            <Card>
+            <Card className={classes.tableCard}>
               <Table
                 tableTitle=""
                 tableHeaderColor="primary"

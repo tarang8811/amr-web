@@ -17,6 +17,8 @@ import { connect } from 'react-redux'
 import AccountStatmentActions from 'Redux/AccountStatementRedux'
 import { FormatForAccountStatements } from 'Transforms/AccountStatements'
 import store from 'store'
+import Button from 'Components/CustomButtons/Button'
+import Picker from 'Components/Picker/Picker'
 
 class AccountStatements extends Component {
   static propTypes = {
@@ -24,7 +26,7 @@ class AccountStatements extends Component {
     accountStatements: PropTypes.array
   }
 
-  state = { accountStatements: [] }
+  state = { accountStatements: [], from: null, to: null, readyToSubmit: false }
 
   componentDidMount() {
     this.props.getAccountStatements({
@@ -42,13 +44,30 @@ class AccountStatements extends Component {
     }
   }
 
+  onUpdate = key => value => {
+    this.setState({ [key]: value }, this.handleStateUpdate)
+  }
+
+  searchStatements = () => {
+    this.props.getAccountStatements({
+      paymentDate: { $gte: this.state.from, $lte: `${this.state.to} 23:59:59` },
+      userId: store.get('userData').id
+    })
+  }
+
+  handleStateUpdate = () => {
+    const readyToSubmit = !!this.state.from && !!this.state.to
+    this.setState({ readyToSubmit })
+  }
+
   onTableChange = (action, tableState) => {}
 
   getTableOptions = () => {
     return {
       filterType: 'dropdown',
-      serverSide: true,
-      onTableChange: this.onTableChange
+      filter: false,
+      onTableChange: this.onTableChange,
+      selectableRows: 'none'
     }
   }
 
@@ -149,14 +168,57 @@ class AccountStatements extends Component {
               <h4 className={classes.cardTitleWhite}>My Account Statements</h4>
             </CardHeader>
             <CardBody>
-              <Table
-                tableTitle=""
-                tableHeaderColor="primary"
-                columns={this.getColumns()}
-                data={this.state.accountStatements}
-                options={this.getTableOptions()}
-              />
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={5}>
+                  <Picker
+                    id="payment-date-from"
+                    labelText="Payment Date (From)"
+                    value={this.state.from}
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={this.onUpdate('from')}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={5}>
+                  <Picker
+                    id="payment-date-to"
+                    labelText="Payment Date (To)"
+                    value={this.state.to}
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={this.onUpdate('to')}
+                  />
+                </GridItem>
+                <GridItem
+                  container
+                  alignItems="center"
+                  justify="center"
+                  xs={12}
+                  sm={12}
+                  md={2}
+                >
+                  <Button
+                    disabled={!this.state.readyToSubmit}
+                    color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                    onClick={this.searchStatements}
+                    fullWidth
+                  >
+                    Search
+                  </Button>
+                </GridItem>
+              </GridContainer>
             </CardBody>
+          </Card>
+          <Card className={classes.tableCard}>
+            <Table
+              tableTitle=""
+              tableHeaderColor="primary"
+              columns={this.getColumns()}
+              data={this.state.accountStatements}
+              options={this.getTableOptions()}
+            />
           </Card>
         </GridItem>
       </GridContainer>

@@ -40,9 +40,11 @@ class AllUsers extends Component {
 
   getTableOptions = () => {
     return {
-      filterType: 'dropdown',
-      serverSide: true,
-      onTableChange: this.onTableChange
+      onTableChange: this.onTableChange,
+      selectableRows: 'none',
+      filter: false,
+      print: false,
+      download: false
     }
   }
 

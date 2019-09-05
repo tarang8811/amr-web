@@ -38,13 +38,14 @@ class AddTicket extends Component {
     super()
     this.state = {
       id: null,
-      flight: null,
-      totalSeats: 0,
+      flight: { displayName: '', value: null },
+      totalSeats: '',
       date: null,
-      price: 0,
+      price: '',
       refundable: RedundableDataArray[1],
       pnr: '',
-      flights: []
+      flights: [],
+      readyToSubmit: false
     }
 
     const data = pathOr(null, ['data'], props.location.state)
@@ -75,6 +76,18 @@ class AddTicket extends Component {
     }
   }
 
+  handleStateUpdate = () => {
+    const readyToSubmit =
+      !!this.state.flight &&
+      !!this.state.flight.value &&
+      !!this.state.totalSeats &&
+      !!this.state.date &&
+      !!this.state.price &&
+      !!this.state.refundable &&
+      !!this.state.pnr
+    this.setState({ readyToSubmit })
+  }
+
   onSave = () => {
     if (this.state.id) {
       this.props.updateTicket(this.state.id, {
@@ -94,7 +107,7 @@ class AddTicket extends Component {
   }
 
   onUpdate = key => value => {
-    this.setState({ [key]: value })
+    this.setState({ [key]: value }, this.handleStateUpdate)
   }
 
   render() {
@@ -197,7 +210,12 @@ class AddTicket extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary" onClick={this.onSave}>
+                <Button
+                  color="primary"
+                  disabled={!this.state.readyToSubmit}
+                  color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                  onClick={this.onSave}
+                >
                   {this.state.id ? 'Update Ticket' : 'Add Ticket'}
                 </Button>
               </CardFooter>

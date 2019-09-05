@@ -13,7 +13,7 @@ export const FormatforUserBookings = data => {
       Departure: DateTime.fromISO(d.ticket.date).toFormat('dd-LLL-yyyy'),
       Passengers: d.passengers,
       PNR: d.ticket.pnr,
-      Amount: d.amount,
+      Amount: `Rs. ${d.amount}`,
       Status: d.isCancelled ? 'Canceled' : 'Confirm',
       'Booked By': d.user.companyName
     }

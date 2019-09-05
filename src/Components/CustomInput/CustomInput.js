@@ -14,7 +14,11 @@ import customInputStyle from './CustomInputStyles'
 
 const CustomInputChange = (inputProps, onChange) => e => {
   if (inputProps && inputProps.type === 'number') {
-    onChange(Number(e.target.value))
+    if (!!e.target.value) {
+      onChange(Number(e.target.value))
+    } else {
+      onChange(null)
+    }
     return
   }
   onChange(e.target.value)

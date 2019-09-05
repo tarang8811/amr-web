@@ -3,8 +3,10 @@ import BookingActions, { BookingTypes } from 'Redux/BookingRedux'
 import ApiErrorMessages, { BuildErrorMsg } from './ApiErrorMessages'
 import { ItemsPerPage } from 'Redux/genericReducers'
 import { AuthSelectors } from 'Redux/AuthRedux'
+import UIActions from 'Redux/UIRedux'
 
 function* getBookings(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const userId = yield select(AuthSelectors.userId)
   const filters = action.filters || {}
   const resp = yield call(api.getBookings, userId, {
@@ -18,8 +20,10 @@ function* getBookings(api, action) {
         resp.data.total
       )
     )
+    yield put(UIActions.onToggleLoader(false))
   } else if (ApiErrorMessages[resp.problem]) {
     yield put(BookingActions.bookingListFailure(BuildErrorMsg(resp)))
+    yield put(UIActions.onToggleLoader(false))
   }
 }
 

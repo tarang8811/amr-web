@@ -1,16 +1,20 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 import UserActions, { UserTypes } from 'Redux/UserRedux'
 import ApiErrorMessages, { BuildErrorMsg } from './ApiErrorMessages'
+import UIActions from 'Redux/UIRedux'
 
 function* getUsers(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const filters = action.filters || {}
   const resp = yield call(api.getUsers, {
     $filters: JSON.stringify(filters)
   })
   if (resp.ok) {
     yield put(UserActions.usersListSuccess(resp.data.data))
+    yield put(UIActions.onToggleLoader(false))
   } else if (ApiErrorMessages[resp.problem]) {
     yield put(UserActions.usersListFailure(BuildErrorMsg(resp)))
+    yield put(UIActions.onToggleLoader(false))
   }
 }
 

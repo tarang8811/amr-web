@@ -17,6 +17,7 @@ import EditUser from 'Containers/Dash/Admin/EditUser'
 import AccountStatement from 'Containers/Dash/Profile/AccountStatement'
 import ChangePassword from 'Containers/Dash/Profile/ChangePassword'
 import Logout from 'Containers/Dash/Profile/Logout'
+import ViewTicket from 'Containers/Dash/Tickets/ViewTicket'
 
 // Main Screens
 import BookingSelect from 'Containers/Main/BookingSelect'
@@ -179,6 +180,12 @@ const individualRoutes = {
       path: '/edit-user',
       name: 'Edit User',
       component: EditUser,
+      layout: '/dash'
+    },
+    {
+      path: '/view-ticket',
+      name: 'View Ticket',
+      component: ViewTicket,
       layout: '/dash'
     }
   ]

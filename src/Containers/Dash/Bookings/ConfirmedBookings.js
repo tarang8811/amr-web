@@ -16,7 +16,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import BookingActions from 'Redux/BookingRedux'
 import { FormatforUserBookings } from 'Transforms/Bookings'
-import { omit } from 'ramda'
 import Button from 'Components/CustomButtons/Button'
 import Picker from 'Components/Picker/Picker'
 import store from 'store'
@@ -27,7 +26,7 @@ class ConfimedBookings extends Component {
     flights: PropTypes.array
   }
 
-  state = { bookings: [], from: null, to: null }
+  state = { bookings: [], from: null, to: null, readyToSubmit: false }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.bookings !== nextProps.bookings) {
@@ -40,8 +39,11 @@ class ConfimedBookings extends Component {
   getTableOptions = () => {
     return {
       filterType: 'dropdown',
-      serverSide: true,
-      onTableChange: this.onTableChange
+      filter: false,
+      print: false,
+      download: false,
+      onTableChange: this.onTableChange,
+      selectableRows: 'none'
     }
   }
 
@@ -96,11 +98,11 @@ class ConfimedBookings extends Component {
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <>
+              <GridItem container alignItems="center">
                 {value.map(v => (
-                  <p>{v.name}</p>
+                  <span>{v.name}</span>
                 ))}
-              </>
+              </GridItem>
             )
           }
         }
@@ -142,7 +144,7 @@ class ConfimedBookings extends Component {
   }
 
   onUpdate = key => value => {
-    this.setState({ [key]: value })
+    this.setState({ [key]: value }, this.handleStateUpdate)
   }
 
   searchBooking = () => {
@@ -153,9 +155,12 @@ class ConfimedBookings extends Component {
     })
   }
 
-  onViewTicket = () => {}
+  handleStateUpdate = () => {
+    const readyToSubmit = !!this.state.from && !!this.state.to
+    this.setState({ readyToSubmit })
+  }
 
-  onCancelTicket = () => {}
+  onViewTicket = () => {}
 
   render() {
     const { classes } = this.props
@@ -170,7 +175,7 @@ class ConfimedBookings extends Component {
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={5}>
                   <Picker
                     id="user-booking-from"
                     labelText="Booking Date (From)"
@@ -181,7 +186,7 @@ class ConfimedBookings extends Component {
                     onChange={this.onUpdate('from')}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={5}>
                   <Picker
                     id="user-booking-to"
                     labelText="Booking Date (To)"
@@ -192,8 +197,20 @@ class ConfimedBookings extends Component {
                     onChange={this.onUpdate('to')}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <Button color="primary" onClick={this.searchBooking}>
+                <GridItem
+                  container
+                  xs={12}
+                  sm={12}
+                  md={2}
+                  alignItems="center"
+                  justify="center"
+                >
+                  <Button
+                    fullWidth
+                    onClick={this.searchBooking}
+                    disabled={!this.state.readyToSubmit}
+                    color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                  >
                     Search
                   </Button>
                 </GridItem>
@@ -201,7 +218,7 @@ class ConfimedBookings extends Component {
             </CardBody>
           </Card>
           {!!this.state.bookings.length && (
-            <Card>
+            <Card className={classes.tableCard}>
               <Table
                 tableTitle=""
                 tableHeaderColor="primary"

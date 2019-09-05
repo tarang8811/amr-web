@@ -34,9 +34,6 @@ function Header({ ...props }) {
         <div className={classes.flex}>
           <p className={classes.title}>{makeBrand()}</p>
         </div>
-        <Hidden smDown implementation="css">
-          <NavBarLinks />
-        </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton
             color="inherit"

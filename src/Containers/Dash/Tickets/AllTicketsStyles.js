@@ -28,6 +28,13 @@ const styles = {
   },
   editButton: {
     padding: '6px 12px !important'
+  },
+  pnrList: {
+    marginLeft: '10px'
+  },
+  tableCard: {
+    paddingLeft: '24px',
+    paddingRight: '24px'
   }
 }
 

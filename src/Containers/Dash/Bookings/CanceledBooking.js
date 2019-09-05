@@ -47,7 +47,9 @@ class ConfimedBookings extends Component {
   getTableOptions = () => {
     return {
       filterType: 'dropdown',
-      serverSide: true,
+      filter: false,
+      print: false,
+      download: false,
       onTableChange: this.onTableChange
     }
   }

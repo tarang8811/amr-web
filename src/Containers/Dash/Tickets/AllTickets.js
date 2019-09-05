@@ -42,8 +42,11 @@ class AllTickets extends Component {
   getTableOptions = () => {
     return {
       filterType: 'dropdown',
-      serverSide: true,
-      onTableChange: this.onTableChange
+      onTableChange: this.onTableChange,
+      selectableRows: 'none',
+      filter: false,
+      print: false,
+      download: false
     }
   }
 
@@ -136,6 +139,7 @@ class AllTickets extends Component {
                     size="sm"
                     color="primary"
                     onClick={this.onPnrListClick(tableMeta.rowIndex)}
+                    className={this.props.classes.pnrList}
                   >
                     PNR LIST
                   </Button>

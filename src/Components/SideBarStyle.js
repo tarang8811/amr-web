@@ -88,7 +88,8 @@ const sidebarStyle = theme => ({
     backgroundColor: 'transparent',
     '&,&:hover': {
       color: whiteColor
-    }
+    },
+    textAlign: 'center'
   },
   logoLinkRTL: {
     textAlign: 'right'

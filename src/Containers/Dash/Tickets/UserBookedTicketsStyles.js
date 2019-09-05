@@ -28,6 +28,10 @@ const styles = {
   },
   editButton: {
     padding: '6px 12px !important'
+  },
+  tableCard: {
+    paddingLeft: '24px',
+    paddingRight: '24px'
   }
 }
 

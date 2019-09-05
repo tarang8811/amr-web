@@ -92,7 +92,20 @@ class AddFlight extends Component {
   }
 
   onUpdate = key => value => {
-    this.setState({ [key]: value })
+    this.setState({ [key]: value }, this.handleStateUpdate)
+  }
+
+  handleStateUpdate = () => {
+    const readyToSubmit =
+      !!this.state.origin &&
+      !!this.state.destination &&
+      !!this.state.originCode &&
+      !!this.state.destinationCode &&
+      !!this.state.arrivalTime &&
+      !!this.state.destinationCode &&
+      !!this.state.flightNumber &&
+      !!this.state.flightNumber
+    this.setState({ readyToSubmit })
   }
 
   render() {
@@ -211,7 +224,11 @@ class AddFlight extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary" onClick={this.onSave}>
+                <Button
+                  disabled={!this.state.readyToSubmit}
+                  color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                  onClick={this.onSave}
+                >
                   {this.state.id ? 'Update Flight' : 'Add Flight'}
                 </Button>
               </CardFooter>
