@@ -19,6 +19,7 @@ import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import SectorActions from 'Redux/SectorRedux'
 import TicketActions from 'Redux/TicketRedux'
+import Typography from '@material-ui/core/Typography'
 
 const styles = {
   cardCategoryWhite: {
@@ -52,7 +53,18 @@ class BookingSelect extends React.Component {
     sector: null,
     date: null,
     seats: 0,
-    readyToSubmit: false
+    readyToSubmit: false,
+    showNoData: false
+  }
+
+  searchedOnce = false
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.ticketTotal && this.searchedOnce && !this.state.showNoData) {
+      this.setState({ showNoData: true })
+    } else if (this.state.showNoData && !!nextProps.ticketTotal) {
+      this.setState({ showNoData: false })
+    }
   }
 
   onUpdate = key => value => {
@@ -61,6 +73,7 @@ class BookingSelect extends React.Component {
 
   searchFlight = () => {
     const sectorArray = this.state.sector.value.split('-')
+    this.searchedOnce = true
     this.props.getTickets({
       originCode: sectorArray[0],
       destinationCode: sectorArray[1],
@@ -165,12 +178,20 @@ class BookingSelect extends React.Component {
                 </GridContainer>
               </CardBody>
             </Card>
-            {this.props.tickets.map(t => (
-              <TicketBookingResult
-                data={t}
-                onBookTicket={this.onBookTicket(t)}
-              />
-            ))}
+
+            {this.state.showNoData ? (
+              <Typography className={classes.time}>
+                No tickets available for the following date. Please try a
+                different date
+              </Typography>
+            ) : (
+              this.props.tickets.map(t => (
+                <TicketBookingResult
+                  data={t}
+                  onBookTicket={this.onBookTicket(t)}
+                />
+              ))
+            )}
           </GridItem>
         </GridContainer>
       </div>
@@ -184,7 +205,8 @@ BookingSelect.propTypes = {
 
 const mapStateToProps = state => ({
   sectors: state.sector.listData,
-  tickets: state.ticket.listData
+  tickets: state.ticket.listData,
+  ticketTotal: state.ticket.listDataTotal
 })
 
 const mapDispatchToProps = dispatch =>

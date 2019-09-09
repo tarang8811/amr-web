@@ -1,11 +1,12 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import { NOTIFICATION_TYPES } from 'Themes/constants'
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
   onToggleLoader: ['loaderState'],
-  onToggleSuccessNotification: ['successMessage']
+  onToggleNotification: ['successMessage', 'notificationType']
 })
 
 export const UITypes = Types
@@ -15,7 +16,8 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   showLoader: false,
-  successMessage: ''
+  successMessage: '',
+  notificationType: ''
 })
 
 /* ------------- Reducers ------------- */
@@ -24,13 +26,16 @@ export const onToggleLoader = (state, { loaderState }) => {
   return state.merge({ showLoader: loaderState })
 }
 
-export const onToggleSuccessNotification = (state, { successMessage }) => {
-  return state.merge({ successMessage })
+export const onToggleNotification = (
+  state,
+  { successMessage, notificationType = NOTIFICATION_TYPES.success }
+) => {
+  return state.merge({ successMessage, notificationType })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ON_TOGGLE_LOADER]: onToggleLoader,
-  [Types.ON_TOGGLE_SUCCESS_NOTIFICATION]: onToggleSuccessNotification
+  [Types.ON_TOGGLE_NOTIFICATION]: onToggleNotification
 })

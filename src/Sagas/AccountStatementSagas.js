@@ -9,7 +9,8 @@ function* getAccountStatements(api, action) {
   yield put(UIActions.onToggleLoader(true))
   const filters = action.filters || {}
   const resp = yield call(api.getAccountStatements, {
-    $filters: JSON.stringify(filters)
+    $filters: JSON.stringify(filters),
+    $order: '-paymentDate'
   })
   if (resp.ok) {
     yield put(

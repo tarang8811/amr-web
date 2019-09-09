@@ -7,7 +7,7 @@ export const FormatforAllTickets = data => {
       slno: i + 1,
       Flight: d.flight.flightNumber,
       Sector: `${d.flight.origin} - ${d.flight.destination}`,
-      Departure: d.date,
+      Departure: DateTime.fromISO(d.date).toFormat('EEE, dd LLL yyyy'),
       seats: d.availableSeats,
       PNR: d.pnr,
       Price: d.price,

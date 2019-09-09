@@ -14,6 +14,13 @@ import MainScreen from 'Containers/Main'
 import Loader from 'react-loader-spinner'
 import Notification from 'Components/Notification/Notification'
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import Cancel from '@material-ui/icons/Cancel'
+import { NOTIFICATION_TYPES } from 'Themes/constants'
+
+const NotificationTypeToIconMap = {
+  [NOTIFICATION_TYPES.success]: CheckCircle,
+  [NOTIFICATION_TYPES.error]: Cancel
+}
 
 class App extends Component {
   componentWillMount() {
@@ -21,7 +28,7 @@ class App extends Component {
   }
 
   closeSuccessNoticiation = () => {
-    this.props.onToggleSuccessNotification('')
+    this.props.onToggleNotification('', this.props.notificationType)
   }
 
   render() {
@@ -36,10 +43,10 @@ class App extends Component {
           </div>
         )}
         <Notification
-          place="bl"
-          color="success"
+          place="tc"
+          color={this.props.notificationType}
           message={this.props.successMessage}
-          icon={CheckCircle}
+          icon={NotificationTypeToIconMap[this.props.notificationType]}
           open={!!this.props.successMessage}
           closeNotification={this.closeSuccessNoticiation}
           close
@@ -58,13 +65,14 @@ class App extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   showLoader: state.ui.showLoader,
-  successMessage: state.ui.successMessage
+  successMessage: state.ui.successMessage,
+  notificationType: state.ui.notificationType
 })
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       startup: StartupActions.startup,
-      onToggleSuccessNotification: UIActions.onToggleSuccessNotification
+      onToggleNotification: UIActions.onToggleNotification
     },
     dispatch
   )

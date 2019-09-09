@@ -22,6 +22,7 @@ import Picker from 'Components/Picker/Picker'
 import TicketActions from 'Redux/TicketRedux'
 import styles from './AddTicketStyles'
 import { pathOr } from 'ramda'
+import { DateTime } from 'luxon'
 
 const RedundableDataArray = [
   { value: true, displayName: 'Refundable' },
@@ -55,7 +56,7 @@ class AddTicket extends Component {
         id: id,
         flight: FormatforAmrSelect([flight])[0],
         totalSeats: availableSeats,
-        date: date,
+        date: DateTime.fromISO(date).toFormat('yyyy-MM-dd'),
         price: price,
         refundable: refundable
           ? RedundableDataArray[0]
@@ -73,6 +74,14 @@ class AddTicket extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.flights !== nextProps.flights) {
       this.setState({ flights: FormatforAmrSelect(nextProps.flights) })
+    }
+
+    if (
+      this.props.ticketCreateData !== nextProps.ticketCreateData &&
+      nextProps.ticketCreateData &&
+      nextProps.ticketCreateData.id
+    ) {
+      this.props.history.push({ pathname: '/dash/all-tickets' })
     }
   }
 
@@ -228,7 +237,8 @@ class AddTicket extends Component {
 }
 
 const mapStateToProps = state => ({
-  flights: state.flight.listData
+  flights: state.flight.listData,
+  ticketCreateData: state.ticket.createData
 })
 
 const mapDispatchToProps = dispatch =>

@@ -7,6 +7,7 @@ import ticketSaga from './TicketSagas'
 import bookingSaga from './BookingSagas'
 import userSaga from './UserSagas'
 import roleSaga from './RoleSagas'
+import passengerSaga from './PassengerSagas'
 import accountStatementSaga from './AccountStatementSagas'
 import API from 'Services/Api'
 
@@ -26,6 +27,7 @@ export default function* root() {
     fork(bookingSaga, api),
     fork(roleSaga, api),
     fork(accountStatementSaga, api),
+    fork(passengerSaga, api),
     fork(userSaga, api)
   ])
 }

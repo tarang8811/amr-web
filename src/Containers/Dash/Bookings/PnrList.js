@@ -10,16 +10,16 @@ import GridContainer from 'Components/Grid/GridContainer'
 // core components
 import GridItem from 'Components/Grid/GridItem'
 import AmrSelect from 'Components/Select'
-import ConfirmBookingHeader from 'Containers/Main/ConfirmBookingHeader'
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
 import PropTypes from 'prop-types'
-import { update } from 'ramda'
+import { update, flatten } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import BookingActions from 'Redux/BookingRedux'
-import { SplitPassengerName } from 'Transforms/Passengers'
+import PassengerActions from 'Redux/PassengerRedux'
+import { SplitPassengerName, ConcatPassengerName } from 'Transforms/Passengers'
 
 const styles = {
   cardCategoryWhite: {
@@ -55,30 +55,52 @@ const titles = [
 class PnrList extends React.Component {
   constructor(props) {
     super()
-    const { passengers, ticketId } = props.location.state
+    const { passengers } = props.location.state
     const splitPassengers = SplitPassengerName(passengers)
     this.state = {
       titles: splitPassengers.map(s => titles.find(t => t.value === s.title)),
       firstNames: splitPassengers.map(s => s.firstName),
-      lastNames: splitPassengers.map(s => s.lastName)
+      lastNames: splitPassengers.map(s => s.lastName),
+      readyToSubmit: false
     }
   }
 
   onUpdate = (key, index) => value => {
-    this.setState({ [key]: update(index, value, this.state[key]) })
+    this.setState(
+      { [key]: update(index, value, this.state[key]) },
+      this.handleStateUpdate
+    )
   }
 
   updatePassengers = () => {
-    // const { seats, flight, id } = this.props.location.state.data
-    // this.props.createBooking({
-    //   passengers: [...Array(seats).keys()].map(
-    //     k =>
-    //
-    //   ),
-    //   seats: seats,
-    //   ticket: { id },
-    //   flight: { id: flight.id }
-    // })
+    const { passengers } = this.props.location.state
+    const updateParamsArray = []
+
+    passengers.map((p, i) => {
+      const passenger = ConcatPassengerName({
+        title: this.state.titles[i].value,
+        firstName: this.state.firstNames[i],
+        lastName: this.state.lastNames[i]
+      })
+
+      if (passenger !== p.name) {
+        updateParamsArray.push({ id: p.id, name: passenger })
+      }
+    })
+
+    updateParamsArray.length && this.props.updatePassengers(updateParamsArray)
+  }
+
+  handleStateUpdate = () => {
+    const flattenedArray = flatten([
+      this.state.titles,
+      this.state.firstNames,
+      this.state.lastNames
+    ])
+    const filteredArray = flattenedArray.filter(v => !!v)
+    // contins no null or empty values
+    const readyToSubmit = filteredArray.length === flattenedArray.length
+    this.setState({ readyToSubmit })
   }
 
   render() {
@@ -135,7 +157,8 @@ class PnrList extends React.Component {
               <CardFooter>
                 <GridItem xs={12} sm={12} md={3}>
                   <Button
-                    color="primary"
+                    disabled={!this.state.readyToSubmit}
+                    color={this.state.readyToSubmit ? 'primary' : 'inactive'}
                     onClick={this.updatePassengers}
                     fullWidth
                   >
@@ -160,7 +183,8 @@ const mapStateToProps = state => ({})
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      createBooking: BookingActions.bookingCreateRequest
+      createBooking: BookingActions.bookingCreateRequest,
+      updatePassengers: PassengerActions.passengersUpdateRequest
     },
     dispatch
   )

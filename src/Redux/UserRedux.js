@@ -17,7 +17,7 @@ const { Types, Creators } = createActions({
   usersListFailure: ['listError'],
 
   usersUpdateRequest: ['userId', 'updateParams'],
-  usersUpdateSuccess: null,
+  usersUpdateSuccess: ['updateData'],
   usersUpdateFailure: ['error'],
 
   usersReset: []

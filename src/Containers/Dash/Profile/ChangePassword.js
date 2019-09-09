@@ -45,18 +45,25 @@ class ChangePassword extends Component {
   state = {
     oldPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    readyToSubmit: false
   }
 
   onUpdate = key => value => {
-    this.setState({ [key]: value })
+    this.setState({ [key]: value }, this.handleStateUpdate)
+  }
+
+  handleStateUpdate = () => {
+    const readyToSubmit =
+      !!this.state.oldPassword &&
+      !!this.state.newPassword &&
+      !!this.state.confirmPassword &&
+      this.state.newPassword === this.state.confirmPassword
+    this.setState({ readyToSubmit })
   }
 
   changePassword = () => {
-    this.props.changePassword({
-      password: this.state.newPassword,
-      currentPassword: this.state.oldPassword
-    })
+    this.props.changePassword(this.state.oldPassword, this.state.newPassword)
   }
 
   render() {
@@ -107,7 +114,11 @@ class ChangePassword extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary" onClick={this.changePassword}>
+                <Button
+                  disabled={!this.state.readyToSubmit}
+                  color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+                  onClick={this.changePassword}
+                >
                   Update Password
                 </Button>
               </CardFooter>

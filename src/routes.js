@@ -103,14 +103,14 @@ const individualRoutes = {
       icon: Dashboard,
       component: ConfirmedBookings,
       layout: '/dash'
-    },
-    {
-      path: '/cancelled-bookings',
-      name: 'Cancelled Bookings',
-      icon: Dashboard,
-      component: CanceledBookings,
-      layout: '/dash'
     }
+    // {
+    //   path: '/cancelled-bookings',
+    //   name: 'Cancelled Bookings',
+    //   icon: Dashboard,
+    //   component: CanceledBookings,
+    //   layout: '/dash'
+    // }
   ],
   Profile: [
     {
@@ -147,6 +147,12 @@ const individualRoutes = {
       path: 'confirm-booking',
       name: 'Confirm Booking',
       component: ConfirmBooking,
+      layout: '/'
+    },
+    {
+      path: 'confirmed-ticket',
+      name: 'Ticket',
+      component: ViewTicket,
       layout: '/'
     },
     {

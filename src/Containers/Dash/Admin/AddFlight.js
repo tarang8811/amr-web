@@ -73,18 +73,28 @@ class AddFlight extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.flightCreateData !== nextProps.flightCreateData &&
+      nextProps.flightCreateData &&
+      nextProps.flightCreateData.id
+    ) {
+      this.props.history.push({ pathname: '/dash/all-flights' })
+    }
+  }
+
   onSave = () => {
     if (this.state.id) {
-      this.props.updateTicket(this.state.id, {
+      this.props.updateFlight(this.state.id, {
         ...this.state,
-        refundable: this.state.isActive.value,
+        isActive: this.state.isActive.value,
         originCode: this.state.originCode.toUpperCase(),
         destinationCode: this.state.destinationCode.toUpperCase()
       })
     } else {
-      this.props.createTicket({
+      this.props.createFlight({
         ...this.state,
-        refundable: this.state.isActive.value,
+        isActive: this.state.isActive.value,
         originCode: this.state.originCode.toUpperCase(),
         destinationCode: this.state.destinationCode.toUpperCase()
       })
@@ -240,7 +250,9 @@ class AddFlight extends Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  flightCreateData: state.flight.createData
+})
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

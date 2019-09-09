@@ -62,6 +62,16 @@ class EditProfile extends Component {
     this.setState({ [key]: value })
   }
 
+  updateProfile = () => {
+    const { companyName, fullName, phone, username } = this.state
+    this.props.updateMe({
+      companyName,
+      fullName,
+      phone,
+      username
+    })
+  }
+
   render() {
     const { classes } = this.props
     return (
@@ -153,7 +163,9 @@ class EditProfile extends Component {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="primary">Update Profile</Button>
+                <Button color="primary" onClick={this.updateProfile}>
+                  Update Profile
+                </Button>
               </CardFooter>
             </Card>
           </GridItem>

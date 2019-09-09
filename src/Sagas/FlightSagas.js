@@ -7,7 +7,8 @@ function* getFlights(api, action) {
   yield put(UIActions.onToggleLoader(true))
   const filters = action.filters || {}
   const resp = yield call(api.getFlights, {
-    $filters: JSON.stringify(filters)
+    $filters: JSON.stringify(filters),
+    $order: '-updatedAt'
   })
   if (resp.ok) {
     yield put(FlightActions.flightsListSuccess(resp.data.data))
@@ -19,23 +20,33 @@ function* getFlights(api, action) {
 }
 
 function* createFlight(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const resp = yield call(api.createFlight, action.createParams)
   if (resp.ok) {
-    yield put(FlightActions.flightsCreateSuccess(resp.data.data))
+    yield put(UIActions.onToggleLoader(false))
+    yield put(FlightActions.flightsCreateSuccess(resp.data))
   } else if (ApiErrorMessages[resp.problem]) {
     yield put(FlightActions.flightsCreateFailure(BuildErrorMsg(resp)))
   }
 }
 
 function* updateFlight(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const resp = yield call(
     api.updateFlight,
-    action.flightid,
+    action.flightId,
     action.updateParams
   )
   if (resp.ok) {
-    yield put(FlightActions.flightsUpdateSuccess(resp.data.data))
+    yield put(UIActions.onToggleLoader(false))
+    yield put(
+      UIActions.onToggleNotification(
+        'Your flight has been updated successfully'
+      )
+    )
+    yield put(FlightActions.flightsUpdateSuccess(resp.data))
   } else if (ApiErrorMessages[resp.problem]) {
+    yield put(UIActions.onToggleLoader(false))
     yield put(FlightActions.flightsUpdateFailure(BuildErrorMsg(resp)))
   }
 }

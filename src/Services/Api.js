@@ -39,6 +39,7 @@ export default {
           }
         ),
       me: () => api.get('users/me'),
+      updateMe: params => api.put(`users/me`, params),
       getUsers: params => api.get('users', params),
       getRoles: params => api.get('roles', params),
       getAccountStatements: params => api.get('account-statements', params),
@@ -58,7 +59,9 @@ export default {
       createBooking: (userId, params) =>
         api.post(`/users/${userId}/bookings`, params),
       updateBooking: (userId, bookingId, params) =>
-        api.put(`/users/${userId}/bookings/${bookingId}`, params)
+        api.put(`/users/${userId}/bookings/${bookingId}`, params),
+      updatePassenger: (passengerId, params) =>
+        api.put(`/passengers/${passengerId}`, params)
     }
   }
 }

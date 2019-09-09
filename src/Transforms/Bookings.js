@@ -19,3 +19,21 @@ export const FormatforUserBookings = data => {
     }
   })
 }
+
+export const GetViewTicketData = data => {
+  return {
+    id: data.id,
+    origin: data.flight.origin,
+    date: data.ticket.date,
+    destination: data.flight.destination,
+    originCode: data.flight.originCode,
+    destinationCode: data.flight.destinationCode,
+    flightNumber: data.flight.flightNumber,
+    arrivalTime: data.flight.arrivalTime,
+    departureTime: data.flight.departureTime,
+    passengers: data.passengers,
+    refundable: data.ticket.refundable,
+    pnr: data.ticket.pnr,
+    amount: data.amount
+  }
+}

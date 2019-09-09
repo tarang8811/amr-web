@@ -55,11 +55,20 @@ class EditUser extends Component {
     if (this.props.roles !== nextProps.roles) {
       this.setState({ roles: FormatforRoles(nextProps.roles) })
     }
+
+    if (
+      this.props.userUpdateData !== nextProps.userUpdateData &&
+      nextProps.userUpdateData &&
+      nextProps.userUpdateData.id
+    ) {
+      this.props.history.push({ pathname: '/dash/all-users' })
+    }
   }
 
   onSave = () => {
     if (this.state.id) {
       this.props.updateUser(this.state.id, {
+        id: this.state.id,
         balance:
           this.state.balanceToAdd > 0
             ? this.state.balanceToAdd
@@ -163,7 +172,8 @@ class EditUser extends Component {
 }
 
 const mapStateToProps = state => ({
-  roles: state.role.listData
+  roles: state.role.listData,
+  userUpdateData: state.user.updateData
 })
 
 const mapDispatchToProps = dispatch =>

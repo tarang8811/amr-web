@@ -15,8 +15,7 @@ import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import BookingActions from 'Redux/BookingRedux'
-import { FormatforUserBookings } from 'Transforms/Bookings'
-import { omit } from 'ramda'
+import { FormatforUserBookings, GetViewTicketData } from 'Transforms/Bookings'
 import Button from 'Components/CustomButtons/Button'
 import Picker from 'Components/Picker/Picker'
 
@@ -183,23 +182,7 @@ class UserBookedTickets extends Component {
     const bookingData = this.props.bookings[rowIndex]
     this.props.history.push({
       pathname: '/dash/view-ticket',
-      state: {
-        data: {
-          id: bookingData.id,
-          origin: bookingData.flight.origin,
-          date: bookingData.ticket.date,
-          destination: bookingData.flight.destination,
-          originCode: bookingData.flight.originCode,
-          destinationCode: bookingData.flight.destinationCode,
-          flightNumber: bookingData.flight.flightNumber,
-          arrivalTime: bookingData.flight.arrivalTime,
-          departureTime: bookingData.flight.departureTime,
-          passengers: bookingData.passengers,
-          refundable: bookingData.ticket.refundable,
-          pnr: bookingData.ticket.pnr,
-          amount: bookingData.amount
-        }
-      }
+      state: { data: GetViewTicketData(bookingData) }
     })
   }
 

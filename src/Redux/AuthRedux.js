@@ -108,8 +108,10 @@ export const loginChangePassword = (state, { data }) =>
 export const loginCheckFailed = (state, { error }) =>
   state.merge({ fetching: false, passwordError: true })
 
-export const userDataSuccess = (state, { userData }) =>
-  state.merge({ userData })
+export const userDataSuccess = (state, { userData }) => {
+  store.set('userData', userData)
+  return state.merge({ userData })
+}
 
 export const clearErrors = state =>
   state.merge({ error: null, passwordError: null })

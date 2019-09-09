@@ -11,7 +11,8 @@ import { DateTime } from 'luxon'
 import AuthActions, { AuthSelectors, AuthTypes } from 'Redux/AuthRedux'
 import { syncEntities } from 'Sagas/UtilitySagas'
 import { BuildErrorMsg } from './ApiErrorMessages'
-// import UIActions from '@Redux/UIRedux'
+import UIActions from 'Redux/UIRedux'
+import { NOTIFICATION_TYPES } from 'Themes/constants'
 
 export function* onSignup(api, action) {
   const resp = yield call(api.signup, action.params)
@@ -47,6 +48,12 @@ function* authorize(api, action, isRefresh = false) {
     return data
   } else {
     // login sends only 400 error code and no validation error
+    yield put(
+      UIActions.onToggleNotification(
+        'Invalid username or password. please try again.',
+        NOTIFICATION_TYPES.error
+      )
+    )
     yield put(AuthActions.loginFailure('something went wrong'))
   }
   yield put(AuthActions.logout())
@@ -123,16 +130,16 @@ function* saveUserData(api, { updatedData, successCallback, failureCallback }) {
 }
 
 function* updateMe(api, { updatedData }) {
-  const orgId = yield select(AuthSelectors.orgId)
-  const {
-    auth: { userData }
-  } = yield select()
-  const { ok } = yield call(api.updateMe, orgId, {
-    ...userData,
-    ...updatedData
-  })
+  yield put(UIActions.onToggleLoader(true))
+  const { ok } = yield call(api.updateMe, updatedData)
   if (ok) {
     const meData = yield call(api.me)
+    yield put(UIActions.onToggleLoader(false))
+    yield put(
+      UIActions.onToggleNotification(
+        'Your profile has been updated successfully'
+      )
+    )
     if (meData.ok) {
       yield put(AuthActions.userDataSuccess(meData.data))
     }
@@ -149,9 +156,19 @@ export function* updateUserProfile(api, { file }) {
   }
 }
 
-export function* changePassword(api, { passwordParams }) {
-  const response = yield call(api.changePassword, passwordParams)
+export function* changePassword(api, { currentPassword, newPassword }) {
+  yield put(UIActions.onToggleLoader(true))
+  const response = yield call(api.changePassword, {
+    currentPassword,
+    password: newPassword
+  })
   if (response.ok) {
+    yield put(UIActions.onToggleLoader(false))
+    yield put(
+      UIActions.onToggleNotification(
+        'Your password has been changed successfully'
+      )
+    )
   } else {
   }
 }
@@ -168,7 +185,6 @@ export default function* authSagas(api) {
     takeLatest(AuthTypes.USER_DATA_REQUEST, fetchUserData, api),
     takeLatest(AuthTypes.LOGOUT, onLogout, api),
     takeLatest(AuthTypes.USER_DATA_UPDATE_REQUEST, saveUserData, api),
-    takeLatest(AuthTypes.UPDATE_ME_REQUEST, updateMe, api),
-    takeLatest(AuthTypes.CHANGE_PASSWORD, changePassword, api)
+    takeLatest(AuthTypes.UPDATE_ME_REQUEST, updateMe, api)
   ])
 }

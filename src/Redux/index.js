@@ -15,6 +15,8 @@ export const reducers = combineReducers({
   accountStatment: require('./AccountStatementRedux').reducer
 })
 
+export const { store } = configureStore(reducers, rootSaga)
+
 export default () => {
   let finalReducers = reducers
   // If rehydration is on use persistReducer otherwise default combineReducers

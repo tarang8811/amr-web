@@ -21,6 +21,7 @@ import { bindActionCreators } from 'redux'
 import BookingActions from 'Redux/BookingRedux'
 import { ConcatPassengerName } from 'Transforms/Passengers'
 import { flatten } from 'ramda'
+import { GetViewTicketData } from 'Transforms/Bookings'
 
 const styles = {
   cardCategoryWhite: {
@@ -68,6 +69,19 @@ class ConfirmBooking extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.bookingCreateData !== nextProps.bookingCreateData &&
+      nextProps.bookingCreateData &&
+      nextProps.bookingCreateData.id
+    ) {
+      this.props.history.push({
+        pathname: '/confirmed-ticket',
+        state: { data: GetViewTicketData(nextProps.bookingCreateData) }
+      })
+    }
+  }
+
   onUpdate = (key, index) => value => {
     this.setState(
       { [key]: update(index, value, this.state[key]) },
@@ -93,7 +107,7 @@ class ConfirmBooking extends React.Component {
       passengers: [...Array(seats).keys()].map(k =>
         ConcatPassengerName({
           title: this.state.titles[k].value,
-          firstName: this.state.firstNames[k].value,
+          firstName: this.state.firstNames[k],
           lastName: this.state.lastNames[k]
         })
       ),
@@ -160,7 +174,6 @@ class ConfirmBooking extends React.Component {
               <CardFooter>
                 <GridItem xs={12} sm={12} md={3}>
                   <Button
-                    color="primary"
                     disabled={!this.state.readyToSubmit}
                     color={this.state.readyToSubmit ? 'primary' : 'inactive'}
                     onClick={this.confirmBooking}
@@ -182,7 +195,9 @@ ConfirmBooking.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  bookingCreateData: state.booking.createData
+})
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

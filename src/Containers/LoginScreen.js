@@ -37,7 +37,6 @@ class LoginScreen extends Component {
 
   componentDidUpdate() {
     store.set('tokenData', this.props.auth)
-    store.set('userData', this.props.userData)
     const accessToken = pathOr(null, ['accessToken'], this.props.auth)
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken)

@@ -26,11 +26,13 @@ import IconButton from '@material-ui/core/IconButton'
 import Close from '@material-ui/icons/Close'
 // core components
 import snackbarContentStyle from './NotificationContentStyle'
+import { NOTIFICATION_TYPES } from 'Themes/constants'
 
 class Notifications extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
-      setTimeout(this.props.closeNotification, 2000)
+      const time = (3 + nextProps.message.length / 50) * 1000
+      setTimeout(this.props.closeNotification, time)
     }
   }
 
@@ -98,7 +100,7 @@ class Notifications extends Component {
 Notifications.propTypes = {
   classes: PropTypes.object.isRequired,
   message: PropTypes.node.isRequired,
-  color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
+  color: PropTypes.oneOf(Object.values(NOTIFICATION_TYPES)),
   close: PropTypes.bool,
   icon: PropTypes.object,
   place: PropTypes.oneOf(['tl', 'tr', 'tc', 'br', 'bl', 'bc']),
