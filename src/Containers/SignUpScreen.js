@@ -69,7 +69,8 @@ class SignUpScreen extends Component {
       !!this.state.lastName &&
       !!this.state.companyName &&
       !!this.state.username &&
-      !!this.state.password
+      !!this.state.password &&
+      this.state.phone.length > 9
     this.setState({ readyToSubmit })
   }
 
