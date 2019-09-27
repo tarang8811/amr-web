@@ -15,8 +15,64 @@ import MadeWithLove from 'Components/MadeWithLove'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import PasswordTextField from 'Components/PasswordTextField'
+import { bindActionCreators } from 'redux'
+import AuthActions from 'Redux/AuthRedux'
+import store from 'store'
+import { pathOr } from 'ramda'
 
 class SignUpScreen extends Component {
+  state = {
+    firstName: '',
+    lastName: '',
+    companyName: '',
+    username: '',
+    password: '',
+    phone: '',
+    readyToSubmit: false
+  }
+
+  onUpdate = key => e => {
+    this.setState({ [key]: e.target.value }, this.handleStateUpdate)
+  }
+
+  componentDidUpdate() {
+    store.set('tokenData', this.props.auth)
+    const accessToken = pathOr(null, ['accessToken'], this.props.auth)
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken)
+      this.props.history.push('/')
+    }
+  }
+
+  onSignUp = () => {
+    const {
+      firstName,
+      lastName,
+      companyName,
+      username,
+      password,
+      phone
+    } = this.state
+    this.props.signupRequest({
+      username,
+      companyName,
+      username,
+      password,
+      phone,
+      fullName: `${firstName} ${lastName}`
+    })
+  }
+
+  handleStateUpdate = () => {
+    const readyToSubmit =
+      !!this.state.firstName &&
+      !!this.state.lastName &&
+      !!this.state.companyName &&
+      !!this.state.username &&
+      !!this.state.password
+    this.setState({ readyToSubmit })
+  }
+
   render() {
     const { classes } = this.props
     return (
@@ -31,66 +87,88 @@ class SignUpScreen extends Component {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    required
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    required
-                    id="companyName"
-                    label="Company Name"
-                    name="companyName"
-                    autoComplete="lname"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <PasswordTextField onChange={this.onChange} />
-                </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  required
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  value={this.state.firstName}
+                  onChange={this.onUpdate('firstName')}
+                />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign Up
-              </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/login" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  value={this.state.lastName}
+                  onChange={this.onUpdate('lastName')}
+                />
               </Grid>
-            </form>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  required
+                  id="companyName"
+                  label="Company Name"
+                  name="companyName"
+                  autoComplete="lname"
+                  value={this.state.companyName}
+                  onChange={this.onUpdate('companyName')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  id="email"
+                  label="Username"
+                  name="email"
+                  autoComplete="email"
+                  value={this.state.username}
+                  onChange={this.onUpdate('username')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  id="phone"
+                  label="Phone"
+                  name="phone"
+                  autoComplete="phone"
+                  value={this.state.phone}
+                  onChange={this.onUpdate('phone')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <PasswordTextField
+                  onChange={this.onUpdate('password')}
+                  value={this.state.password}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={!this.state.readyToSubmit}
+              color={this.state.readyToSubmit ? 'primary' : 'inactive'}
+              className={classes.submit}
+              onClick={this.onSignUp}
+            >
+              Sign Up
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </div>
           <Box mt={5}>
             <MadeWithLove />
@@ -101,9 +179,17 @@ class SignUpScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  auth: state.auth.data
+})
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      signupRequest: AuthActions.signupRequest
+    },
+    dispatch
+  )
 
 export default compose(
   withStyles(styles),

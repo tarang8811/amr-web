@@ -33,7 +33,16 @@ class EditUser extends Component {
     super()
     const data = pathOr(null, ['data'], props.location.state)
     if (data) {
-      const { id, companyName, fullName, phone, balance, username, role } = data
+      const {
+        id,
+        companyName,
+        fullName,
+        phone,
+        balance,
+        username,
+        role,
+        isBlocked
+      } = data
       this.state = {
         id: id,
         companyName,
@@ -42,7 +51,8 @@ class EditUser extends Component {
         balance,
         username,
         role: { value: role.id, displayName: role.name },
-        roles: []
+        roles: [],
+        isBlocked
       }
     }
   }
@@ -73,9 +83,14 @@ class EditUser extends Component {
           this.state.balanceToAdd > 0
             ? this.state.balanceToAdd
             : -this.state.balanceToDeduct,
-        role: { id: this.state.role.value }
+        role: { id: this.state.role.value },
+        isBlocked: this.state.isBlocked
       })
     }
+  }
+
+  toggleIsBlocked = () => {
+    this.setState({ isBlocked: !this.state.isBlocked }, this.onSave)
   }
 
   onUpdate = key => value => {
@@ -109,6 +124,9 @@ class EditUser extends Component {
                     </Typography>
                     <Typography className={classes.sideBarHeading}>
                       Username: {this.state.username}
+                    </Typography>
+                    <Typography className={classes.sideBarHeading}>
+                      Status: {this.state.isBlocked ? 'In Active' : 'Active'}
                     </Typography>
                   </GridItem>
                 </GridContainer>
@@ -162,6 +180,15 @@ class EditUser extends Component {
                 <Button color="primary" onClick={this.onSave}>
                   Update User
                 </Button>
+                {this.state.isBlocked ? (
+                  <Button color="success" onClick={this.toggleIsBlocked}>
+                    Activate
+                  </Button>
+                ) : (
+                  <Button color="danger" onClick={this.toggleIsBlocked}>
+                    De-Activate
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           </GridItem>

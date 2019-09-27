@@ -100,11 +100,26 @@ class AllUsers extends Component {
         }
       },
       {
-        name: 'Alt. Phone Number',
+        name: 'Role',
         options: {
           filter: false,
           sort: false,
           empty: true
+        }
+      },
+      {
+        name: 'Status',
+        options: {
+          filter: false,
+          sort: false,
+          empty: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return this.state.users[tableMeta.rowIndex].isBlocked ? (
+              <span className={this.props.classes.inactive}>In Active</span>
+            ) : (
+              <span className={this.props.classes.active}>Active</span>
+            )
+          }
         }
       },
       {

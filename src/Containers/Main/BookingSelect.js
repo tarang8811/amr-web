@@ -20,6 +20,10 @@ import { bindActionCreators } from 'redux'
 import SectorActions from 'Redux/SectorRedux'
 import TicketActions from 'Redux/TicketRedux'
 import Typography from '@material-ui/core/Typography'
+import store from 'store'
+import { pathOr } from 'ramda'
+import NotificationContent from 'Components/Notification/NotificationContent'
+import Cancel from '@material-ui/icons/Cancel'
 
 const styles = {
   cardCategoryWhite: {
@@ -111,7 +115,17 @@ class BookingSelect extends React.Component {
       }
     })
 
-    return (
+    const userData = store.get('userData')
+    const isBlocked = pathOr(true, ['isBlocked'], userData)
+
+    return !!isBlocked ? (
+      <NotificationContent
+        color="danger"
+        message="YOUR ACCOUNT IS DEACTIVATED. PLEASE CONTACT ADMIN TO ACTIVATE YOUR ACCOUNT"
+        icon={Cancel}
+        open
+      />
+    ) : (
       <div>
         <GridContainer alignItems="center" justify="center">
           <GridItem xs={12} sm={12} md={10}>

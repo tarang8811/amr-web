@@ -24,9 +24,12 @@ import Typography from '@material-ui/core/Typography'
 import { DateTime } from 'luxon'
 import { Grid } from '@material-ui/core'
 import ReactToPrint from 'react-to-print'
+import Images from 'Themes/Images'
+import store from 'store'
 
 class PreviewTicket extends Component {
   render() {
+    const userData = store.get('userData')
     const { classes, data } = this.props
     return (
       <Card
@@ -35,6 +38,13 @@ class PreviewTicket extends Component {
       >
         <CardBody className={classes.ticketCardBody}>
           <GridItem container justify="space-between" alignItems="center">
+            <Typography
+              className={classes.companyName}
+              component="h1"
+              variant="h5"
+            >
+              {userData.companyName || ''}
+            </Typography>
             <Typography
               className={classes.ticketHeader}
               component="h1"
@@ -78,6 +88,10 @@ class PreviewTicket extends Component {
                 </Typography>
               </Grid>
               <Grid className={classes.flightInfo}>
+                <img className={classes.avatar} src={Images.plane} alt="" />
+              </Grid>
+
+              <Grid className={classes.flightInfo}>
                 <Typography className={classes.sectorCode}>
                   {data.destinationCode}
                 </Typography>
@@ -99,6 +113,16 @@ class PreviewTicket extends Component {
               }`}</Typography>
             ))}
           </GridItem>
+          {data.radioValue === 'yes' && (
+            <>
+              <Divider />
+              <GridItem container justify="flex-end">
+                <Typography className={classes.totalPrice}>
+                  Total Price: Rs. {data.displayPrice.toLocaleString()}
+                </Typography>
+              </GridItem>
+            </>
+          )}
           <Divider />
           <GridItem container direction="row" alignItems="center">
             <span className={classes.important}>IMPORTANT :</span>

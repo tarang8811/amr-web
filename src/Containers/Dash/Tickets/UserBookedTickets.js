@@ -18,6 +18,7 @@ import BookingActions from 'Redux/BookingRedux'
 import { FormatforUserBookings, GetViewTicketData } from 'Transforms/Bookings'
 import Button from 'Components/CustomButtons/Button'
 import Picker from 'Components/Picker/Picker'
+import { DateTime } from 'luxon'
 
 class UserBookedTickets extends Component {
   static propTypes = {
@@ -172,8 +173,11 @@ class UserBookedTickets extends Component {
   }
 
   searchBooking = () => {
+    const to = DateTime.fromSQL(this.state.to)
+      .plus({ days: 1 })
+      .toFormat('yyyy-MM-dd')
     this.props.getBookings({
-      bookingDate: { $gte: this.state.from, $lte: `${this.state.to} 23:59:59` },
+      bookingDate: { $gte: this.state.from, $lte: to },
       userBookedTickets: true
     })
   }

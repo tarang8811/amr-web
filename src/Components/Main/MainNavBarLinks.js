@@ -51,69 +51,75 @@ class AdminNavbarLinks extends React.Component {
     return (
       <div>
         <div className={classes.searchWrapper}>
-          <p className={classes.balance}>Balance : Rs. {userData.balance}</p>
+          <p className={classes.balance}>
+            Balance : Rs. {userData.balance.toLocaleString()}
+          </p>
         </div>
-        <div className={classes.manager}>
-          <Button
-            buttonRef={node => {
-              this.anchorProfile = node
-            }}
-            color={window.innerWidth > 959 ? 'transparent' : 'white'}
-            justIcon={window.innerWidth > 959}
-            simple={!(window.innerWidth > 959)}
-            aria-owns={openNotifcation ? 'profile-menu-list-grow' : null}
-            aria-haspopup="true"
-            onClick={this.handleToggleProfile}
-            className={classes.buttonLink}
-          >
-            <Person className={classes.icons} />
-            <Hidden mdUp implementation="css">
-              <p className={classes.linkText}>Dash</p>
-            </Hidden>
-          </Button>
-          <Poppers
-            open={openProfile}
-            anchorEl={this.anchorProfile}
-            transition
-            disablePortal
-            className={
-              classNames({ [classes.popperClose]: !openProfile }) +
-              ' ' +
-              classes.popperNav
-            }
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="profile-menu-list-grow"
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom'
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={this.handleCloseProfile}>
-                    <MenuList role="menu">
-                      <MenuItem
-                        onClick={this.handleCloseProfile}
-                        className={classes.dropdownItem}
-                      >
-                        <Link href="/dash/confirmed-booking">Dash</Link>
-                      </MenuItem>
-                      <Divider light />
-                      <MenuItem
-                        onClick={this.handleCloseProfile}
-                        className={classes.dropdownItem}
-                      >
-                        <Link href="/dash/logout">Logout</Link>
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Poppers>
-        </div>
+        {!!userData.isBlocked ? (
+          <Link href="/dash/logout">Logout</Link>
+        ) : (
+          <div className={classes.manager}>
+            <Button
+              buttonRef={node => {
+                this.anchorProfile = node
+              }}
+              color={window.innerWidth > 959 ? 'transparent' : 'white'}
+              justIcon={window.innerWidth > 959}
+              simple={!(window.innerWidth > 959)}
+              aria-owns={openNotifcation ? 'profile-menu-list-grow' : null}
+              aria-haspopup="true"
+              onClick={this.handleToggleProfile}
+              className={classes.buttonLink}
+            >
+              <Person className={classes.icons} />
+              <Hidden mdUp implementation="css">
+                <p className={classes.linkText}>Dash</p>
+              </Hidden>
+            </Button>
+            <Poppers
+              open={openProfile}
+              anchorEl={this.anchorProfile}
+              transition
+              disablePortal
+              className={
+                classNames({ [classes.popperClose]: !openProfile }) +
+                ' ' +
+                classes.popperNav
+              }
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="profile-menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom' ? 'center top' : 'center bottom'
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={this.handleCloseProfile}>
+                      <MenuList role="menu">
+                        <MenuItem
+                          onClick={this.handleCloseProfile}
+                          className={classes.dropdownItem}
+                        >
+                          <Link href="/dash/confirmed-booking">Dash</Link>
+                        </MenuItem>
+                        <Divider light />
+                        <MenuItem
+                          onClick={this.handleCloseProfile}
+                          className={classes.dropdownItem}
+                        >
+                          <Link href="/dash/logout">Logout</Link>
+                        </MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Poppers>
+          </div>
+        )}
       </div>
     )
   }

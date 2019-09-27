@@ -27,7 +27,7 @@ import Close from '@material-ui/icons/Close'
 // core components
 import snackbarContentStyle from './NotificationContentStyle'
 
-function NotificationContentStyle({ ...props }) {
+function NotificationContent({ ...props }) {
   const { classes, message, color, close, icon, rtlActive } = props
   var action = []
   const messageClasses = classNames({
@@ -63,7 +63,7 @@ function NotificationContentStyle({ ...props }) {
   )
 }
 
-SnackbarContent.propTypes = {
+NotificationContent.propTypes = {
   classes: PropTypes.object.isRequired,
   message: PropTypes.node.isRequired,
   color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
@@ -72,4 +72,4 @@ SnackbarContent.propTypes = {
   rtlActive: PropTypes.bool
 }
 
-export default withStyles(snackbarContentStyle)(SnackbarContent)
+export default withStyles(snackbarContentStyle)(NotificationContent)

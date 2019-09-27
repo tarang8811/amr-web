@@ -19,7 +19,7 @@ import { FormatForAccountStatements } from 'Transforms/AccountStatements'
 import store from 'store'
 import Button from 'Components/CustomButtons/Button'
 import Picker from 'Components/Picker/Picker'
-
+import { DateTime } from 'luxon'
 class AccountStatements extends Component {
   static propTypes = {
     classes: PropTypes.object,
@@ -49,8 +49,11 @@ class AccountStatements extends Component {
   }
 
   searchStatements = () => {
+    const to = DateTime.fromSQL(this.state.to)
+      .plus({ days: 1 })
+      .toFormat('yyyy-MM-dd')
     this.props.getAccountStatements({
-      paymentDate: { $gte: this.state.from, $lte: `${this.state.to} 23:59:59` },
+      paymentDate: { $gte: this.state.from, $lte: to },
       userId: store.get('userData').id
     })
   }

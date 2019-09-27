@@ -113,8 +113,7 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth.data,
-  userData: state.auth.userData
+  auth: state.auth.data
 })
 
 const mapDispatchToProps = dispatch =>

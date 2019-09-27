@@ -16,7 +16,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import TicketActions from 'Redux/TicketRedux'
 import { FormatforAllTickets } from 'Transforms/Tickets'
-import { omit } from 'ramda'
+import store from 'store'
 import Button from 'Components/CustomButtons/Button'
 
 class AllTickets extends Component {
@@ -28,7 +28,7 @@ class AllTickets extends Component {
   state = { tickets: [] }
 
   componentDidMount() {
-    this.props.getTickets()
+    this.props.getTickets({ userId: store.get('userData').id })
   }
 
   componentWillReceiveProps(nextProps) {

@@ -8,7 +8,8 @@ const images = {
   sideBar3: require('Images/sidebar-3.jpg'),
   sideBar4: require('Images/sidebar-4.jpg'),
   spicejet: require('Images/spicejet.jpg'),
-  goAir: require('Images/goair.png')
+  goAir: require('Images/goair.png'),
+  plane: require('Images/plane.png')
 }
 
 export default images

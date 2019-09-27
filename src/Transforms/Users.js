@@ -7,8 +7,10 @@ export const FormatforAllUsers = data => {
       Name: d.fullName,
       Username: d.username,
       'Phone Number': d.phone,
-      Balance: `Rs. ${d.balance}`,
-      'Alt. Phone Number': d.altPhoneNumber
+      Balance: `Rs. ${d.balance.toLocaleString()}`,
+      'Alt. Phone Number': d.altPhoneNumber,
+      isBlocked: d.isBlocked,
+      Role: d.role.name
     }
   })
 }

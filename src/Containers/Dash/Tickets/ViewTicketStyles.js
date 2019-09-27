@@ -110,6 +110,18 @@ const styles = {
   },
   ticketCardBody: {
     border: '1px solid black'
+  },
+  avatar: {
+    width: '60px'
+  },
+  totalPrice: {
+    fontWeight: '600',
+    fontSize: '16px',
+    margin: '10px 0px'
+  },
+  companyName: {
+    margin: '8px 0px',
+    fontWeight: '600'
   }
 }
 

@@ -15,10 +15,11 @@ import compose from 'recompose/compose'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import BookingActions from 'Redux/BookingRedux'
-import { FormatforUserBookings } from 'Transforms/Bookings'
+import { FormatforUserBookings, GetViewTicketData } from 'Transforms/Bookings'
 import Button from 'Components/CustomButtons/Button'
 import Picker from 'Components/Picker/Picker'
 import store from 'store'
+import { DateTime } from 'luxon'
 
 class ConfimedBookings extends Component {
   static propTypes = {
@@ -132,7 +133,11 @@ class ConfimedBookings extends Component {
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
-                <Button size="sm" color="primary" onClick={this.onViewTicket}>
+                <Button
+                  size="sm"
+                  color="primary"
+                  onClick={this.onViewTicket(tableMeta.rowIndex)}
+                >
                   View Ticket
                 </Button>
               </>
@@ -148,8 +153,11 @@ class ConfimedBookings extends Component {
   }
 
   searchBooking = () => {
+    const to = DateTime.fromSQL(this.state.to)
+      .plus({ days: 1 })
+      .toFormat('yyyy-MM-dd')
     this.props.getBookings({
-      bookingDate: { $gte: this.state.from, $lte: `${this.state.to} 23:59:59` },
+      bookingDate: { $gte: this.state.from, $lte: to },
       isCancelled: 0,
       userId: store.get('userData').id
     })
@@ -160,7 +168,13 @@ class ConfimedBookings extends Component {
     this.setState({ readyToSubmit })
   }
 
-  onViewTicket = () => {}
+  onViewTicket = rowIndex => () => {
+    const bookingData = this.props.bookings[rowIndex]
+    this.props.history.push({
+      pathname: '/dash/view-ticket',
+      state: { data: GetViewTicketData(bookingData) }
+    })
+  }
 
   render() {
     const { classes } = this.props

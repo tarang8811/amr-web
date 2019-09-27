@@ -22,7 +22,9 @@ function Header({ ...props }) {
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
-          <p className={classes.title}>AMR TRAVELS</p>
+          <a href="/" className={classes.title}>
+            AMR TRAVELS
+          </a>
         </div>
         <Hidden smDown implementation="css">
           <NavBarLinks />

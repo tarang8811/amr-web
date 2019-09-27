@@ -12,11 +12,11 @@ export const FormatForAccountStatements = data => {
       'Payment Date': DateTime.fromISO(d.paymentDate).toFormat(
         'dd-LLL-yyyy hh:mm a'
       ),
-      'Debit Amount': d.mode === 'Debit' ? d.amount : '-',
-      'Credit Amount': d.mode === 'Credit' ? d.amount : '-',
+      'Debit Amount': d.mode === 'Debit' ? d.amount.toLocaleString() : '-',
+      'Credit Amount': d.mode === 'Credit' ? d.amount.toLocaleString() : '-',
       Mode: d.mode,
       PNR: d.ticket ? d.ticket.pnr : '-',
-      Balance: `Rs. ${d.currentBalance}`,
+      Balance: `Rs. ${d.currentBalance.toLocaleString()}`,
       Note: d.note
     }
   })

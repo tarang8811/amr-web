@@ -39,7 +39,7 @@ function* createBooking(api, action) {
     // refetch user data
     yield put(AuthActions.userDataRequest())
     yield put(
-      UIActions.onToggleNotification('Your ticket was booking successfully')
+      UIActions.onToggleNotification('Your ticket was booked successfully')
     )
   } else if (ApiErrorMessages[resp.problem]) {
     const message = BuildErrorMsg(resp)

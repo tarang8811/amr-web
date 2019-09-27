@@ -29,7 +29,7 @@ import store from 'store'
 const allRoutesFunc = () => {
   const userData = store.get('userData')
 
-  if (userData && userData.role && userData.role.name) {
+  if (userData && userData.role && userData.role.name && !userData.isBlocked) {
     switch (userData.role.name) {
       case 'Admin':
         return allRoutesForAdmin
@@ -39,7 +39,7 @@ const allRoutesFunc = () => {
         return allRoutesForUser
     }
   } else {
-    return []
+    return ['Profile']
   }
 }
 
@@ -197,6 +197,15 @@ const individualRoutes = {
   ]
 }
 
-const individualRoutesArray = flatten(Object.values(individualRoutes))
+const individualRoutesFunc = () => {
+  const accessibleRoutes = allRoutesFunc()
+  const individualRoutesArray = accessibleRoutes.map(p => individualRoutes[p])
+  return flatten([
+    ...individualRoutesArray,
+    individualRoutes['Main'],
+    individualRoutes['Misc']
+  ])
+}
+const individualRoutesArray = individualRoutesFunc()
 
 export default { allRoutes, individualRoutes, individualRoutesArray }

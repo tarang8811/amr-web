@@ -1,3 +1,4 @@
+import { successColor, dangerColor } from 'css/Helpers'
 const styles = {
   cardCategoryWhite: {
     '&,& a,& a:hover,& a:focus': {
@@ -35,6 +36,12 @@ const styles = {
   tableCard: {
     paddingLeft: '24px',
     paddingRight: '24px'
+  },
+  active: {
+    color: successColor[0]
+  },
+  inactive: {
+    color: dangerColor[0]
   }
 }
 

@@ -15,17 +15,26 @@ import UIActions from 'Redux/UIRedux'
 import { NOTIFICATION_TYPES } from 'Themes/constants'
 
 export function* onSignup(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const resp = yield call(api.signup, action.params)
   if (resp.ok) {
     yield call(onLogin, api, action)
   } else if (resp.data && resp.data.validationErrors) {
+    yield put(AuthActions.signupFailure(BuildErrorMsg(resp)))
     yield put(
-      AuthActions.signupFailure(
-        resp.data.validationErrors.map(err => err.message).join('\n')
+      UIActions.onToggleNotification(
+        BuildErrorMsg(resp),
+        NOTIFICATION_TYPES.error
       )
     )
-    action.failureCallback(BuildErrorMsg(resp))
+    yield put(UIActions.onToggleLoader(false))
   } else {
+    yield put(
+      UIActions.onToggleNotification(
+        'Something went wrong. please contact support@amrtravels.in',
+        NOTIFICATION_TYPES.error
+      )
+    )
     yield put(AuthActions.signupFailure('something went wrong'))
   }
 }
@@ -37,6 +46,7 @@ function* authorize(api, action, isRefresh = false) {
     yield call(api.setAuthToken, data.accessToken)
     const meData = yield call(api.me, data.accessToken)
     if (meData.ok) {
+      yield put(UIActions.onToggleLoader(false))
       yield put(AuthActions.userDataSuccess(meData.data))
       yield put(AuthActions.loginSuccess(data))
       // if refreshing the token call the actions on startup to refresh data
@@ -47,6 +57,7 @@ function* authorize(api, action, isRefresh = false) {
     }
     return data
   } else {
+    yield put(UIActions.onToggleLoader(false))
     // login sends only 400 error code and no validation error
     yield put(
       UIActions.onToggleNotification(
@@ -91,6 +102,7 @@ export function* authorizeLoop(api, tokenData) {
 }
 
 export function* onLogin(api, action) {
+  yield put(UIActions.onToggleLoader(true))
   const tokenData = yield call(authorize, api, action, false)
   if (tokenData) {
     yield fork(authorizeLoop, api, tokenData)
