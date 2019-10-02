@@ -4,13 +4,13 @@ import { merge } from 'ramda'
 import store from 'store'
 
 export default {
-  create: (baseURL = 'http://localhost:1339/') => {
+  create: (baseURL = process.env.API_URL) => {
     const tokenData = store.get('tokenData')
     const accessToken = tokenData ? tokenData.accessToken : ''
     const api = apisauce.create({
-      baseURL,
+      baseURL: 'https://amr-travels.appspot.com/',
       headers: {
-        Origin: 'https://api.amrtravels.in',
+        Origin: 'https://amr-travels.appspot.com/',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },

@@ -1,0 +1,3 @@
+dispatch:
+  - url: 'portal.amrtravels.in/*'
+    service: 'amr-web'
