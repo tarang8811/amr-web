@@ -24,6 +24,7 @@ import store from 'store'
 import { pathOr } from 'ramda'
 import NotificationContent from 'Components/Notification/NotificationContent'
 import Cancel from '@material-ui/icons/Cancel'
+import { DateTime } from 'luxon'
 
 const styles = {
   cardCategoryWhite: {
@@ -58,7 +59,8 @@ class BookingSelect extends React.Component {
     date: null,
     seats: 0,
     readyToSubmit: false,
-    showNoData: false
+    showNoData: false,
+    sectorTickets: []
   }
 
   searchedOnce = false
@@ -68,6 +70,14 @@ class BookingSelect extends React.Component {
       this.setState({ showNoData: true })
     } else if (this.state.showNoData && !!nextProps.ticketTotal) {
       this.setState({ showNoData: false })
+    }
+
+    if (this.props.sectorTickets !== nextProps.sectorTickets) {
+      this.setState({
+        sectorTickets: nextProps.sectorTickets.map(t =>
+          DateTime.fromISO(t.date).toFormat('yyyy-MM-dd')
+        )
+      })
     }
   }
 
@@ -83,6 +93,14 @@ class BookingSelect extends React.Component {
       destinationCode: sectorArray[1],
       date: this.state.date,
       availableSeats: { $gte: this.state.seats }
+    })
+  }
+
+  getDatesForSector = () => {
+    const sectorArray = this.state.sector.value.split('-')
+    this.props.getDatesForSector({
+      originCode: sectorArray[0],
+      destinationCode: sectorArray[1]
     })
   }
 
@@ -105,6 +123,16 @@ class BookingSelect extends React.Component {
     })
   }
 
+  shouldDisableDate = date => {
+    return this.state.sectorTickets.length === 0
+      ? date.day === 0
+      : !this.state.sectorTickets.includes(date.toFormat('yyyy-MM-dd'))
+  }
+
+  updateSector = value => {
+    this.setState({ sector: value, date: null }, this.getDatesForSector)
+  }
+
   render() {
     const { classes } = this.props
 
@@ -117,6 +145,10 @@ class BookingSelect extends React.Component {
 
     const userData = store.get('userData')
     const isBlocked = pathOr(true, ['isBlocked'], userData)
+    const helperText =
+      this.state.sectorTickets.length === 0 && !!this.state.sector
+        ? 'No tickets available for this sector'
+        : ''
 
     return !!isBlocked ? (
       <NotificationContent
@@ -140,7 +172,7 @@ class BookingSelect extends React.Component {
                       id="booking-sector"
                       labelText="Sector"
                       inputHtmlName="booking-sector"
-                      onChange={this.onUpdate('sector')}
+                      onChange={this.updateSector}
                       selectedObject={this.state.sector}
                       data={sectors}
                       formControlProps={{
@@ -156,6 +188,9 @@ class BookingSelect extends React.Component {
                       formControlProps={{
                         fullWidth: true
                       }}
+                      helperText={helperText}
+                      disabled={!this.state.sectorTickets.length}
+                      shouldDisableDate={this.shouldDisableDate}
                       onChange={this.onUpdate('date')}
                     />
                   </GridItem>
@@ -220,6 +255,7 @@ BookingSelect.propTypes = {
 const mapStateToProps = state => ({
   sectors: state.sector.listData,
   tickets: state.ticket.listData,
+  sectorTickets: state.ticket.sectorTickets,
   ticketTotal: state.ticket.listDataTotal
 })
 
@@ -227,7 +263,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSectors: SectorActions.sectorsListRequest,
-      getTickets: TicketActions.ticketsListRequest
+      getTickets: TicketActions.ticketsListRequest,
+      getDatesForSector: TicketActions.sectorTicketsListRequest
     },
     dispatch
   )

@@ -26,6 +26,19 @@ function* getTickets(api, action) {
   }
 }
 
+function* getSectorTickets(api, action) {
+  yield put(UIActions.onToggleLoader(true))
+  const filters = action.filters || {}
+  const resp = yield call(api.getTickets, {
+    $filters: JSON.stringify(filters),
+    $order: '-updatedAt'
+  })
+  if (resp.ok) {
+    yield put(TicketActions.sectorTicketsListSuccess(resp.data.data))
+  }
+  yield put(UIActions.onToggleLoader(false))
+}
+
 function* createTicket(api, action) {
   yield put(UIActions.onToggleLoader(true))
   const resp = yield call(api.createTicket, action.createParams)
@@ -63,6 +76,7 @@ export default function* ticketSagas(api) {
   yield all([
     takeLatest(TicketTypes.TICKETS_LIST_REQUEST, getTickets, api),
     takeLatest(TicketTypes.TICKETS_CREATE_REQUEST, createTicket, api),
-    takeLatest(TicketTypes.TICKETS_UPDATE_REQUEST, updateTicket, api)
+    takeLatest(TicketTypes.TICKETS_UPDATE_REQUEST, updateTicket, api),
+    takeLatest(TicketTypes.SECTOR_TICKETS_LIST_REQUEST, getSectorTickets, api)
   ])
 }

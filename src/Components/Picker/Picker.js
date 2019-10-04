@@ -39,7 +39,10 @@ class Picker extends Component {
       formControlProps,
       labelText,
       value,
-      type = 'date'
+      type = 'date',
+      shouldDisableDate = () => {},
+      helperText = '',
+      disabled = false
     } = this.props
 
     const underlineClasses = classNames({
@@ -60,7 +63,10 @@ class Picker extends Component {
               id={id}
               label={labelText}
               value={value ? DateTime.fromSQL(value) : null}
+              shouldDisableDate={shouldDisableDate}
               onChange={this.onChange}
+              disabled={disabled}
+              helperText={helperText}
               InputProps={{ underline: underlineClasses }}
             />
           ) : (

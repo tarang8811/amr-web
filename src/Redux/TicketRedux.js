@@ -22,6 +22,9 @@ const { Types, Creators } = createActions({
   ticketsListSuccess: ['listData', 'listDataOffset', 'listDataTotal'],
   ticketsListFailure: ['listError'],
 
+  sectorTicketsListRequest: ['filters'],
+  sectorTicketsListSuccess: ['sectorTickets'],
+
   ticketsCreateRequest: ['createParams'],
   ticketsCreateSuccess: ['createData'],
   ticketsCreateFailure: ['createError'],
@@ -48,6 +51,8 @@ export const INITIAL_STATE = Immutable({
   listError: null,
   listFetching: false,
 
+  sectorTickets: [],
+
   createData: {},
   createError: null,
   createFetching: false,
@@ -63,6 +68,10 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
+export const sectorTicketsListSuccess = (state, { sectorTickets }) => {
+  return state.merge({ sectorTickets })
+}
+
 export const reset = state => INITIAL_STATE
 
 export const TicketSelectors = {
@@ -75,6 +84,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.TICKETS_LIST_REQUEST]: listRequest,
   [Types.TICKETS_LIST_SUCCESS]: listSuccess,
   [Types.TICKETS_LIST_FAILURE]: listFailure,
+
+  [Types.SECTOR_TICKETS_LIST_SUCCESS]: sectorTicketsListSuccess,
 
   [Types.TICKETS_CREATE_REQUEST]: createRequest,
   [Types.TICKETS_CREATE_SUCCESS]: createSuccess,

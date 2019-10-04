@@ -3,12 +3,15 @@ import { UrlEncode } from 'Lib/RamdaExtensions'
 import { merge } from 'ramda'
 import store from 'store'
 
+const PROD_URL = 'https://amr-travels.appspot.com/'
+const LOCAL_URL = 'http://localhost:1339'
+
 export default {
   create: (baseURL = process.env.API_URL) => {
     const tokenData = store.get('tokenData')
     const accessToken = tokenData ? tokenData.accessToken : ''
     const api = apisauce.create({
-      baseURL: 'https://amr-travels.appspot.com/',
+      baseURL: PROD_URL,
       headers: {
         Origin: 'https://amr-travels.appspot.com/',
         'Content-Type': 'application/json',
