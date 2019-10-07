@@ -184,6 +184,7 @@ class BookingSelect extends React.Component {
                     <Picker
                       id="add-ticket-picker"
                       labelText="Booking Date"
+                      disablePast
                       value={this.state.date}
                       formControlProps={{
                         fullWidth: true

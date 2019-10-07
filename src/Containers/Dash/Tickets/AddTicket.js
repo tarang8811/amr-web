@@ -40,7 +40,7 @@ class AddTicket extends Component {
     this.state = {
       id: null,
       flight: { displayName: '', value: null },
-      totalSeats: '',
+      totalSeats: 0,
       date: null,
       price: '',
       refundable: RedundableDataArray[1],
@@ -89,7 +89,6 @@ class AddTicket extends Component {
     const readyToSubmit =
       !!this.state.flight &&
       !!this.state.flight.value &&
-      !!this.state.totalSeats &&
       !!this.state.date &&
       !!this.state.price &&
       !!this.state.refundable &&
@@ -155,6 +154,7 @@ class AddTicket extends Component {
                     <Picker
                       id="add-ticket-picker"
                       labelText="Date"
+                      disablePast
                       value={this.state.date}
                       formControlProps={{
                         fullWidth: true

@@ -42,7 +42,8 @@ class Picker extends Component {
       type = 'date',
       shouldDisableDate = () => {},
       helperText = '',
-      disabled = false
+      disabled = false,
+      disablePast = false
     } = this.props
 
     const underlineClasses = classNames({
@@ -61,6 +62,7 @@ class Picker extends Component {
               format="yyyy-MM-dd"
               margin="normal"
               id={id}
+              disablePast={disablePast}
               label={labelText}
               value={value ? DateTime.fromSQL(value) : null}
               shouldDisableDate={shouldDisableDate}

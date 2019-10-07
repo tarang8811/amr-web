@@ -1,5 +1,4 @@
-env: flex
-runtime: nodejs
+runtime: nodejs10
 service: amr-web
 
 # [START handlers]
