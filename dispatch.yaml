@@ -1,3 +1,5 @@
 dispatch:
   - url: 'portal.amrtravels.in/*'
     service: 'amr-web'
+  - url: 'tarangagarwal.com/*'
+    service: 'portfolio'
