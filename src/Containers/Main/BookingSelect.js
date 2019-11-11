@@ -100,7 +100,8 @@ class BookingSelect extends React.Component {
     const sectorArray = this.state.sector.value.split('-')
     this.props.getDatesForSector({
       originCode: sectorArray[0],
-      destinationCode: sectorArray[1]
+      destinationCode: sectorArray[1],
+      date: { $gte: DateTime.fromJSDate(new Date()).toFormat('yyyy-MM-dd') }
     })
   }
 
