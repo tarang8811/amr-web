@@ -13,7 +13,7 @@
     "classnames": "^2.2.6",
     "husky": "^3.0.2",
     "lint-staged": "^9.2.1",
-    "luxon": "^1.17.2",
+    "luxon": "^2.5.2",
     "mui-datatables": "^2.8.0",
     "perfect-scrollbar": "^1.4.0",
     "prettier": "^1.18.2",
